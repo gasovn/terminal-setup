@@ -1,0 +1,117 @@
+local wezterm = require 'wezterm'
+local M = {}
+
+-- Process name → Nerd Font icon
+M.process_icons = {
+    ['fish'] = '󰈺',
+    ['bash'] = '',
+    ['zsh'] = '',
+    ['nvim'] = '',
+    ['vim'] = '',
+    ['ssh'] = '󰣀',
+    ['docker'] = '',
+    ['node'] = '󰎙',
+    ['python'] = '',
+    ['python3'] = '',
+    ['go'] = '',
+    ['cargo'] = '',
+    ['git'] = '',
+    ['htop'] = '',
+    ['btop'] = '',
+    ['top'] = '',
+    ['yazi'] = '󰉋',
+    ['lazygit'] = '',
+    ['make'] = '',
+    ['npm'] = '',
+    ['pnpm'] = '',
+    ['claude'] = '󰚩',
+    ['sudo'] = '',
+}
+
+function M.get_process_icon(name)
+    return M.process_icons[name] or ''
+end
+
+-- Extract process name from full path
+function M.basename(path)
+    if not path then return '' end
+    return path:match('([^/]+)$') or path
+end
+
+-- Shorten path: /home/wolf/projects/foo/bar → ~/p/foo/bar
+function M.shorten_path(path)
+    if not path then return '' end
+    local home = os.getenv('HOME') or ''
+    path = path:gsub('^' .. home:gsub('([%.%-%+])', '%%%1'), '~')
+    local parts = {}
+    for part in path:gmatch('[^/]+') do
+        table.insert(parts, part)
+    end
+    if #parts <= 3 then return path end
+    -- Keep first (~ or root indicator) and last 2
+    if parts[1] == '~' then
+        return '~/' .. '…/' .. parts[#parts - 1] .. '/' .. parts[#parts]
+    end
+    return '…/' .. parts[#parts - 1] .. '/' .. parts[#parts]
+end
+
+-- Parse ~/.ssh/config → list of {name, group}
+function M.parse_ssh_config()
+    local hosts = {}
+    local home = os.getenv('HOME') or ''
+    local f = io.open(home .. '/.ssh/config', 'r')
+    if not f then return hosts end
+
+    local group = ''
+    for line in f:lines() do
+        local comment = line:match('^#%s*===(.+)===%s*$')
+        if comment then
+            group = comment:match('^%s*(.-)%s*$') or ''
+        end
+        local host = line:match('^Host%s+(%S+)')
+        if host and host ~= '*' then
+            table.insert(hosts, { name = host, group = group })
+        end
+    end
+    f:close()
+    return hosts
+end
+
+-- Check if directory has uncommitted git changes (cached, 5s TTL)
+-- Uses io.popen because wezterm.run_child_process can't be called
+-- from synchronous callbacks like format-tab-title.
+function M.git_dirty(dir)
+    if not dir then return false end
+    if not wezterm.GLOBAL.git_cache then wezterm.GLOBAL.git_cache = {} end
+    local cache = wezterm.GLOBAL.git_cache[dir]
+    local now = os.time()
+    if cache and (now - cache.time) < 5 then return cache.dirty end
+
+    local cmd = string.format(
+        'git -C "%s" status --porcelain -unormal --ignore-submodules 2>/dev/null',
+        dir
+    )
+    local handle = io.popen(cmd)
+    local stdout = handle:read('*a')
+    handle:close()
+    local dirty = stdout ~= nil and stdout ~= ''
+    wezterm.GLOBAL.git_cache[dir] = { dirty = dirty, time = now }
+    return dirty
+end
+
+-- Get battery info (returns nil if no battery)
+function M.get_battery()
+    local info = wezterm.battery_info()
+    if #info == 0 then return nil end
+    local b = info[1]
+    local pct = math.floor(b.state_of_charge * 100 + 0.5)
+    local icon
+    if pct >= 80 then icon = '󰁹'
+    elseif pct >= 60 then icon = '󰂀'
+    elseif pct >= 40 then icon = '󰁾'
+    elseif pct >= 20 then icon = '󰁼'
+    else icon = '󰁺' end
+    return icon .. ' ' .. pct .. '%'
+end
+
+return M

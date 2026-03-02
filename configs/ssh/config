@@ -1,0 +1,388 @@
+# SSH Config — migrated from Asbru Connection Manager
+# Generated: 2026-02-27
+
+# === Default Settings ===
+Host *
+    IdentityFile ~/.ssh/id_rsa
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+
+# === GitLab (External) ===
+Host gitlab.pharmhub.ru
+    HostName gitlab.pharmhub.ru
+    User git
+    Port 2112
+
+# === GitLab ===
+Host gitlab
+    HostName 10.0.0.230
+    User nikita.gasov
+    Port 2200
+    # GITLAB
+
+Host gitlab-runner
+    HostName 10.0.0.231
+    User nikita.gasov
+    Port 2200
+    # GITLAB Runner
+
+# === Test Servers ===
+Host stage
+    HostName 10.0.1.18
+    User nikita.gasov
+    Port 2200
+    # Stage
+
+Host test01
+    HostName 10.0.1.10
+    User nikita.gasov
+    # Test01
+
+Host test02
+    HostName 10.0.1.11
+    User nikita.gasov
+    Port 2200
+    # Test02
+
+Host test03
+    HostName 10.0.1.12
+    User nikita.gasov
+    Port 2200
+    # Test03
+
+Host test04
+    HostName 10.0.1.13
+    User nikita.gasov
+    # Test04
+
+Host test05
+    HostName 10.0.1.14
+    User nikita.gasov
+    # Test05
+
+Host test06
+    HostName 10.0.1.17
+    User nikita.gasov
+    # Test06
+
+Host test07
+    HostName 10.0.1.15
+    User nikita.gasov
+    # Test07
+
+Host test08
+    HostName 10.0.1.19
+    User nikita.gasov
+    # Test08
+
+Host test09
+    HostName 10.0.1.23
+    User nikita.gasov
+    # Test09
+
+Host test10
+    HostName 10.0.1.24
+    User nikita.gasov
+    Port 2112
+    # Test10
+
+Host test11
+    HostName 10.0.1.28
+    User nikita.gasov
+    # Test11
+
+# === ClickHouse PROD ===
+Host ch-s1-r1
+    HostName 10.0.0.182
+    User nikita.gasov
+    # CH-S1-R1
+
+Host ch-s1-r2
+    HostName 10.0.0.185
+    User nikita.gasov
+    # CH-S1-R2
+
+Host ch-s2-r1
+    HostName 10.0.0.183
+    User nikita.gasov
+    # CH-S2-R1
+
+Host ch-s2-r2
+    HostName 10.0.0.186
+    User nikita.gasov
+    # CH-S2-R2
+
+Host ch-s3-r1
+    HostName 10.0.0.184
+    User nikita.gasov
+    # CH-S3-R1
+
+Host ch-s3-r2
+    HostName 10.0.0.187
+    User nikita.gasov
+    # CH-S3-R2
+
+# === ClickHouse Keeper ===
+Host chk-1
+    HostName 10.0.0.135
+    User nikita.gasov
+    # CHK-1
+
+Host chk-2
+    HostName 10.0.0.136
+    User nikita.gasov
+    # CHK-2
+
+Host chk-3
+    HostName 10.0.0.137
+    User nikita.gasov
+    # CHK-3
+
+Host chk-4
+    HostName 10.0.0.138
+    User nikita.gasov
+    # CHK-4
+
+Host chk-5
+    HostName 10.0.0.139
+    User nikita.gasov
+    Port 2200
+    # CHK-5
+
+# === ClickHouse DEV ===
+Host clickhouse-test1
+    HostName 10.0.1.25
+    User nikita.gasov
+    # ClickHouse-Test1
+
+Host clickhouse-test2
+    HostName 10.0.1.26
+    User nikita.gasov
+    # ClickHouse-Test2
+
+Host clickhouse-test3
+    HostName 10.0.1.27
+    User nikita.gasov
+    # ClickHouse-Test3
+
+Host dev-ch-s1-r1
+    HostName 10.0.1.41
+    User nikita.gasov
+    # DEV-CH-S1-R1
+
+Host dev-ch-s2-r1
+    HostName 10.0.1.42
+    User nikita.gasov
+    # DEV-CH-S2-R1
+
+Host dev-ch-s3-r1
+    HostName 10.0.1.43
+    User nikita.gasov
+    Port 2122
+    # DEV-CH-S3-R1
+
+# === PostgreSQL ===
+Host psql-master
+    HostName 10.0.0.170
+    User nikita.gasov
+    # PSQL Master
+
+Host psql1
+    HostName 10.0.0.171
+    User nikita.gasov
+    # PSQL1
+
+Host psql2
+    HostName 10.0.0.172
+    User nikita.gasov
+    Port 2200
+    # PSQL2
+
+Host psql3
+    HostName 10.0.0.173
+    User nikita.gasov
+    # PSQL3
+
+Host psql4
+    HostName 10.0.0.174
+    User nikita.gasov
+    # PSQL4
+
+Host psql5
+    HostName 10.0.0.175
+    User nikita.gasov
+    Port 2200
+    # PSQL5
+
+Host psql6
+    HostName 10.0.0.176
+    User nikita.gasov
+    # PSQL6
+
+# === Vertica ===
+Host vsql1-1
+    HostName 10.0.0.132
+    User nikita.gasov
+    # VSQL1-1
+
+Host vsql2-1
+    HostName 10.0.1.4
+    User nikita.gasov
+    # VSQL2-1
+
+Host vsql3-1
+    HostName 10.0.0.161
+    User nikita.gasov
+    # VSQL3-1
+
+# === Application ===
+Host app-kz
+    HostName 10.0.0.200
+    User nikita.gasov
+    # APP
+
+Host app-ru
+    HostName 10.0.0.154
+    User nikita.gasov
+    # APP
+
+Host matchflow-kz
+    HostName 10.0.0.201
+    User nikita.gasov
+    # Matchflow
+
+Host matchflow-ru
+    HostName 10.0.0.155
+    User nikita.gasov
+    # MatchFlow
+
+# === Docker ===
+Host docker-2-ru
+    HostName 10.0.0.152
+    User nikita.gasov
+    # Docker-2
+
+Host docker-kz
+    HostName 10.0.0.202
+    User nikita.gasov
+    # Docker
+
+Host docker-ru
+    HostName 10.0.0.153
+    User nikita.gasov
+    Port 2200
+    # Docker
+
+# === Gate ===
+Host gate-dev
+    HostName 10.0.1.2
+    User nikita.gasov
+    # GATE DEV
+
+Host gate-prod
+    HostName 10.0.0.130
+    User nikita.gasov
+    # GATE PROD
+
+Host gate-reg-ru
+    HostName 89.108.123.251
+    User nikita.gasov
+    Port 2200
+    # GATE REG RU
+
+# === Storage & FTP ===
+Host ftp
+    HostName 10.0.0.156
+    User nikita.gasov
+    # FTP
+
+Host ftp-dev
+    HostName 89.108.120.2
+    User nikita.gasov
+    # FTP DEV
+
+Host ftp-new
+    HostName 213.232.228.181
+    User nikita.gasov
+    Port 2200
+    # FTP - New
+
+Host storage1
+    HostName 10.0.0.146
+    User nikita.gasov
+    # Storage1
+
+Host storage2
+    HostName 10.0.0.147
+    User nikita.gasov
+    Port 2200
+    # Storage2
+
+Host storagev
+    HostName 10.0.0.145
+    User nikita.gasov
+    # StorageV
+
+# === ML ===
+Host ml1
+    HostName 10.0.0.143
+    User nikita.gasov
+    # ML1
+
+Host ml1-dev
+    HostName 10.0.1.8
+    User nikita.gasov
+    # ML1 - DEV
+
+Host ml2
+    HostName 10.0.0.144
+    User nikita.gasov
+    # ML2
+
+# === External ===
+Host justhost-root
+    HostName 92.114.54.221
+    User nikita.gasov
+    Port 2200
+    # JustHost - root
+
+Host nginx-proxy
+    HostName 185.146.3.64
+    User nikita.gasov
+    # NGINX Proxy
+
+Host ph-vdsina-nl-root
+    HostName 62.84.96.158
+    User nikita.gasov
+    # [PH]VDSINA[NL][root]
+
+Host selectel-proxy
+    HostName 213.232.228.180
+    User nikita.gasov
+    # Selectel Proxy
+
+Host the.hostring-nl-root
+    HostName 94.131.107.93
+    User nikita.gasov
+    # The.Hostring[NL][root]
+
+Host vdsina-nl-root
+    HostName 77.246.109.115
+    User nikita.gasov
+    # VDSINA[NL][root]
+
+# === Other ===
+Host jasper
+    HostName 10.10.110.19
+    User nikita.gasov
+    # Jasper
+
+Host metabase
+    HostName 10.0.0.234
+    User nikita.gasov
+    # MetaBase
+
+Host wiki
+    HostName 10.0.0.247
+    User nikita.gasov
+    # Wiki

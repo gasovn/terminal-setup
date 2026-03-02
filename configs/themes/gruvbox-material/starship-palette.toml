@@ -1,0 +1,153 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[](color_orange)\
+$os\
+$username\
+[](fg:color_orange bg:color_yellow)\
+$directory\
+[](fg:color_yellow bg:color_aqua)\
+$git_branch\
+$git_status\
+[](fg:color_aqua bg:color_blue)\
+$c\
+$rust\
+$golang\
+$nodejs\
+$python\
+$dotnet\
+$package\
+[](fg:color_blue bg:color_bg3)\
+$docker_context\
+[](fg:color_bg3 bg:color_bg1)\
+$time\
+([](fg:color_bg1 bg:color_red)\
+[](fg:color_red bg:color_bg1)\
+$cmd_duration)\
+[ ](fg:color_bg1)\
+$line_break$character"""
+
+palette = 'gruvbox_material'
+
+[palettes.gruvbox_material]
+color_fg0 = '#d4be98'
+color_bg0 = '#282828'
+color_bg1 = '#32302f'
+color_bg3 = '#5a524c'
+color_blue = '#7daea3'
+color_aqua = '#89b482'
+color_green = '#a9b665'
+color_orange = '#e78a4e'
+color_purple = '#d3869b'
+color_red = '#ea6962'
+color_yellow = '#d8a657'
+
+[os]
+disabled = false
+style = "bg:color_orange fg:color_bg0"
+
+[os.symbols]
+Fedora = "󰣛"
+Linux = "󰌽"
+Macos = "󰀵"
+Ubuntu = "󰕈"
+Windows = "󰍲"
+Arch = "󰣇"
+Debian = "󰣚"
+
+[username]
+show_always = false
+style_user = "bg:color_orange fg:color_bg0"
+style_root = "bg:color_orange fg:color_bg0"
+format = '[ $user ]($style)'
+
+[directory]
+style = "fg:color_bg0 bg:color_yellow"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = "󰝚 "
+"Pictures" = " "
+
+[git_branch]
+symbol = " "
+style = "fg:color_bg0 bg:color_aqua"
+format = '[ $symbol$branch ]($style)'
+
+[git_status]
+style = "fg:color_bg0 bg:color_aqua"
+format = '[$all_status$ahead_behind]($style)'
+
+[nodejs]
+symbol = " "
+style = "fg:color_bg0 bg:color_blue"
+format = '[ $symbol$version ]($style)'
+detect_files = ["package.json", ".node-version"]
+detect_folders = ["node_modules"]
+
+[c]
+symbol = " "
+style = "fg:color_bg0 bg:color_blue"
+format = '[ $symbol$version ]($style)'
+
+[rust]
+symbol = " "
+style = "fg:color_bg0 bg:color_blue"
+format = '[ $symbol$version ]($style)'
+
+[golang]
+symbol = " "
+style = "fg:color_bg0 bg:color_blue"
+format = '[ $symbol$version ]($style)'
+
+[python]
+symbol = " "
+style = "fg:color_bg0 bg:color_blue"
+format = '[ $symbol$version ]($style)'
+
+[dotnet]
+symbol = "󰪮 "
+style = "fg:color_bg0 bg:color_blue"
+format = '[ $symbol$version ]($style)'
+
+[package]
+symbol = "󰏗 "
+style = "fg:color_bg0 bg:color_blue"
+format = '[ $symbol$version ]($style)'
+
+[docker_context]
+symbol = " "
+style = "fg:color_blue bg:color_bg3"
+format = '[ $symbol$context ]($style)'
+
+[time]
+disabled = false
+time_format = "%R"
+style = "fg:color_fg0 bg:color_bg1"
+format = '[  $time ]($style)'
+
+[cmd_duration]
+style = "fg:color_fg0 bg:color_bg1"
+show_milliseconds = true
+format = '[ took $duration ]($style)'
+
+[line_break]
+disabled = false
+
+[character]
+disabled = false
+success_symbol = '[](bold fg:color_green)'
+error_symbol = '[](bold fg:color_red)'
+vimcmd_symbol = '[](bold fg:color_green)'
+vimcmd_replace_one_symbol = '[](bold fg:color_purple)'
+vimcmd_replace_symbol = '[](bold fg:color_purple)'
+vimcmd_visual_symbol = '[](bold fg:color_yellow)'
+
+[hostname]
+ssh_only = true
+style = "bg:color_orange fg:color_bg0"
+format = '[@$hostname ]($style)'
