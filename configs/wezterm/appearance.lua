@@ -169,6 +169,9 @@ function M.apply(config)
             else
                 title = process
             end
+        elseif process == 'ssh' then
+            local host = utils.ssh_host(pane)
+            title = host and ('ssh ' .. host) or 'ssh'
         else
             local cwd = pane.current_working_dir
             if cwd then dir = cwd.file_path or tostring(cwd) end

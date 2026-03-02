@@ -99,6 +99,40 @@ function M.git_dirty(dir)
     return dirty
 end
 
+-- Extract SSH hostname from pane info
+function M.ssh_host(pane)
+    -- 1. Try pane.title — remote shell usually sets "user@host: path"
+    local title = pane.title or ''
+    local host = title:match('^%S+@([^:%s]+)')
+    if host then return host end
+
+    -- 2. Try argv via mux API — gets "ssh hostname" from command args
+    local ok, mux_pane = pcall(function()
+        return wezterm.mux.get_pane(pane.pane_id)
+    end)
+    if ok and mux_pane then
+        local info = mux_pane:get_foreground_process_info()
+        if info and info.argv then
+            -- Find the hostname arg: skip flags (-o, -p, etc.) and their values
+            local argv = info.argv
+            local skip_next = false
+            for i = 2, #argv do
+                if skip_next then
+                    skip_next = false
+                elseif argv[i]:match('^%-[bcDEeFIiJLlmOopQRSWw]$') then
+                    skip_next = true -- next arg is value for this flag
+                elseif not argv[i]:match('^%-') then
+                    -- First non-flag argument is [user@]hostname
+                    local h = argv[i]:match('@(.+)') or argv[i]
+                    return h
+                end
+            end
+        end
+    end
+
+    return nil
+end
+
 -- Get battery info (returns nil if no battery)
 function M.get_battery()
     local info = wezterm.battery_info()
