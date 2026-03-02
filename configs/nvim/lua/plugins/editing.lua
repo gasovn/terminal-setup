@@ -1,4 +1,7 @@
 return {
+  -- Smart buffer deletion (keeps window open)
+  { "echasnovski/mini.bufremove", lazy = true },
+
   -- Surround (ys, ds, cs)
   {
     "kylechui/nvim-surround",

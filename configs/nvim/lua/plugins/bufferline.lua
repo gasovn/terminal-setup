@@ -5,6 +5,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin/nvim" },
     opts = {
       options = {
+        close_command = function(n) require("mini.bufremove").delete(n, false) end,
         diagnostics = "nvim_lsp",
         always_show_bufferline = false,
         offsets = {

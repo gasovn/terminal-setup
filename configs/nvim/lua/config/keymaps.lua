@@ -26,7 +26,7 @@ map("v", ">", ">gv", { desc = "Indent right" })
 -- Buffers
 map("n", "<S-h>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
 map("n", "<S-l>", "<cmd>bnext<CR>", { desc = "Next buffer" })
-map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Delete buffer" })
+map("n", "<leader>bd", function() require("mini.bufremove").delete(0, false) end, { desc = "Delete buffer" })
 
 -- Save
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "Save file" })

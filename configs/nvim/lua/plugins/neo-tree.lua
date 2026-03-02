@@ -75,7 +75,22 @@ return {
               { "symlink_target", zindex = 10, highlight = "NeoTreeSymbolicLinkTarget" },
               { "clipboard", zindex = 10 },
               { "diagnostics", errors_only = true, zindex = 20, align = "right", hide_when_expanded = true },
-              -- git_status always visible on directories (even when expanded)
+              { "git_status", zindex = 20, align = "right" },
+            },
+          },
+        },
+        file = {
+          { "indent" },
+          { "icon" },
+          {
+            "container",
+            content = {
+              { "name", zindex = 10 },
+              { "symlink_target", zindex = 10, highlight = "NeoTreeSymbolicLinkTarget" },
+              { "clipboard", zindex = 10 },
+              { "bufnr", zindex = 10 },
+              { "modified", zindex = 20, align = "right" },
+              { "diagnostics", zindex = 20, align = "right" },
               { "git_status", zindex = 20, align = "right" },
             },
           },
