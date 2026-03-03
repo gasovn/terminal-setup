@@ -66,7 +66,7 @@ chsh -s /usr/bin/fish
 
 ```bash
 cp -r configs/themes/ ~/.config/themes/
-echo "catppuccin-mocha" > ~/.config/current-theme
+echo "gruvbox-material" > ~/.config/current-theme
 ```
 
 ### Fish
@@ -209,7 +209,7 @@ wezterm ls-fonts 2>&1 | head -1
     │   ├── keymaps.lua   — хоткеи (leader=Space)
     │   └── autocmds.lua  — автокоманды (автосохранение, позиция курсора)
     └── plugins/          — 33 файла: по одному на плагин/группу
-        ├── colorscheme.lua   — Catppuccin Mocha (через theme switcher)
+        ├── colorscheme.lua   — Gruvbox Material (через theme switcher)
         ├── lualine.lua       — статусбар
         ├── lsp.lua           — LSP (Mason + mason-lspconfig)
         ├── cmp.lua           — автодополнение (nvim-cmp + LuaSnip)
@@ -232,8 +232,8 @@ wezterm ls-fonts 2>&1 | head -1
 
 ## 9. Тема и переключение
 
-Темы: **Catppuccin Mocha** (по умолчанию), **Gruvbox Material**
-Акцент: **Teal** (маппится на aqua в Gruvbox)
+Темы: **Gruvbox Material** (по умолчанию), **Catppuccin Mocha**
+Акцент: **Orange** (Gruvbox) / **Teal** (Catppuccin)
 
 Переключение одной командой:
 

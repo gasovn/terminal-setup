@@ -15,7 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Setup lazy.nvim
 require("lazy").setup("plugins", {
   defaults = { lazy = true },
-  install = { colorscheme = { "catppuccin", "habamax" } },
+  install = { colorscheme = { "gruvbox-material", "habamax" } },
   checker = { enabled = true, notify = false },
   change_detection = { notify = false },
   performance = {
