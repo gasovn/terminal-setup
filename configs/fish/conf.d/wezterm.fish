@@ -3,6 +3,7 @@
 # Delete key — forward delete (WezTerm sends ctrl-h instead of proper delete with kitty keyboard)
 bind ctrl-h delete-char
 bind \e\[3~ delete-char
+bind \e\[3\;5~ kill-word
 
 # Set tab title to current command while running
 function __wezterm_preexec --on-event fish_preexec

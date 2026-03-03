@@ -299,6 +299,7 @@ Host alias
 ### Особенности
 
 - **Delete**: WezTerm с kitty keyboard protocol отправляет `ctrl-h` вместо `\e[3~`. Фикс в `keybinds.lua` (явный SendString) и `wezterm.fish` (bind ctrl-h/\e[3~)
+- **Ctrl+Delete**: удаление слова вперёд. Фикс в `keybinds.lua` (SendString `\e[3;5~`) и `wezterm.fish` (bind → kill-word)
 - **Копирование мышью**: автокопирование при выделении отключено. Копировать: правый клик или Ctrl+Shift+C
 - **Прокрутка мыши**: 3 строки за щелчок колёсика (вместо дефолтных ~5)
 - **Git dirty в табах**: жёлтый ● в заголовке таба если в текущей директории есть незакоммиченные изменения

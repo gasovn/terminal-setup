@@ -156,6 +156,7 @@ function M.apply(config)
 
         -- ═══ Fix Delete key (sends ctrl-h instead of \e[3~ with kitty keyboard) ═══
         { key = 'Delete', mods = 'NONE', action = act.SendString '\x1b[3~' },
+        { key = 'Delete', mods = 'CTRL', action = act.SendString '\x1b[3;5~' },
 
         -- ═══ Clipboard ═══
         { key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo 'Clipboard' },
