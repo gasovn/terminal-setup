@@ -161,14 +161,14 @@ wezterm ls-fonts 2>&1 | head -1
 ```
 ~/.config/wezterm/
 ├── wezterm.lua              — точка входа, подключает все модули
-├── appearance.lua           — тема, шрифт (FiraCode 13), табы с git dirty (●), GPU
+├── appearance.lua           — тема, шрифт (FiraCode 13), табы (процесс + директория, git dirty ●), GPU
 ├── keybinds.lua             — хоткеи (табы, сплиты, workspaces, SSH, copy mode, мышь)
 ├── kitty-cyrillic-fix.lua   — фикс Kitty protocol для русской раскладки (Shift/Ctrl + кириллица)
 ├── ssh.lua                  — SSH domains из ~/.ssh/config
 ├── workspaces.lua           — workspace по умолчанию
 ├── statusbar.lua            — powerline статусбар (workspace, dir, время)
 ├── hyperlinks.lua           — URL + file:line ссылки + шаблон для тикетов
-└── utils.lua                — иконки процессов, парсинг SSH, git dirty, хелперы
+└── utils.lua                — иконки процессов, нормализация имён (version-based бинарники), парсинг SSH, git dirty
 ```
 
 ---
@@ -302,7 +302,8 @@ Host alias
 - **Ctrl+Delete**: удаление слова вперёд. Фикс в `keybinds.lua` (SendString `\e[3;5~`) и `wezterm.fish` (bind → kill-word)
 - **Копирование мышью**: автокопирование при выделении отключено. Копировать: правый клик или Ctrl+Shift+C
 - **Прокрутка мыши**: 3 строки за щелчок колёсика (вместо дефолтных ~5)
-- **Git dirty в табах**: жёлтый ● в заголовке таба если в текущей директории есть незакоммиченные изменения
+- **Заголовки табов**: шеллы показывают `fish ~/path`, TUI-программы — `process dirname` (например, `claude my-repo`, `nvim my-project`). Жёлтый ● если есть незакоммиченные git-изменения
+- **Нормализация процессов**: Claude Code использует version-based бинарник (`~/.local/share/claude/versions/X.Y.Z`), `utils.lua` нормализует имя обратно в "claude"
 
 ---
 
@@ -328,9 +329,16 @@ WezTerm с включённым Kitty keyboard protocol (`enable_kitty_keyboard 
 
 ## 13. Git интеграция
 
-### WezTerm: dirty indicator в табах
+### WezTerm: заголовки табов
 
-В заголовке таба отображается жёлтый символ ● если текущая директория содержит незакоммиченные git-изменения. Реализация в `utils.lua` (`git_dirty()`) с кэшированием (5 сек TTL).
+Формат заголовка зависит от типа процесса:
+- **Шеллы** (fish, bash, zsh): `fish ~/code/my-repo`
+- **TUI-программы** (claude, nvim, lazygit и др.): `claude my-repo` — имя процесса + название директории
+- **SSH**: `ssh hostname`
+
+Жёлтый символ ● в конце заголовка если в текущей директории есть незакоммиченные git-изменения. Реализация в `utils.lua` (`git_dirty()`) с кэшированием (5 сек TTL).
+
+**Нормализация имён процессов**: некоторые программы (напр. Claude Code) используют version-based бинарники (`~/.local/share/claude/versions/X.Y.Z`). Функция `basename()` в `utils.lua` нормализует такие пути обратно в читаемое имя.
 
 ### Neovim Neo-tree: git status иконки
 

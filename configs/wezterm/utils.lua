@@ -32,9 +32,11 @@ function M.get_process_icon(name)
     return M.process_icons[name] or ''
 end
 
--- Extract process name from full path
+-- Extract process name from full path, resolving known version-based binaries
 function M.basename(path)
     if not path then return '' end
+    -- Claude Code: ~/.local/share/claude/versions/X.Y.Z → "claude"
+    if path:find('/claude/versions/') then return 'claude' end
     return path:match('([^/]+)$') or path
 end
 

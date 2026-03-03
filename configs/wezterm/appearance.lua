@@ -175,9 +175,15 @@ function M.apply(config)
         else
             local cwd = pane.current_working_dir
             if cwd then dir = cwd.file_path or tostring(cwd) end
-            title = pane.title
-            if title == '' or title == process then
-                title = process
+            -- Show "process dirname" so tabs like claude/nvim indicate which repo
+            if dir then
+                local dirname = dir:match('([^/]+)/?$') or dir
+                title = process .. ' ' .. dirname
+            else
+                title = pane.title
+                if title == '' or title == process then
+                    title = process
+                end
             end
         end
 
