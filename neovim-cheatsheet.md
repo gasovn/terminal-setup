@@ -85,16 +85,10 @@ Directories show the highest-priority icon from their children. File names are c
 | Key | Action |
 |---|---|
 | `<leader>gg` | Lazygit |
-| `<leader>gs` | Git status (Neogit) |
-| `<leader>gc` | Git commit |
-| `<leader>gp` | Git push |
-| `<leader>gl` | Git pull |
 | `<leader>gd` | Diff view |
 | `<leader>gD` | Diff vs last commit |
 | `<leader>gh` | File history |
 | `<leader>gH` | Branch history |
-| `<leader>gw` | Git worktrees |
-| `<leader>gW` | Create worktree |
 | `]c` / `[c` | Next/Prev hunk |
 | `<leader>ghs` | Stage hunk |
 | `<leader>ghr` | Reset hunk |

@@ -215,7 +215,7 @@ wezterm ls-fonts 2>&1 | head -1
         ├── cmp.lua           — автодополнение (nvim-cmp + LuaSnip)
         ├── treesitter.lua    — подсветка синтаксиса
         ├── telescope.lua     — fuzzy finder
-        ├── git.lua           — gitsigns, neogit, diffview, git-conflict
+        ├── git.lua           — gitsigns, diffview, git-conflict
         ├── dap.lua           — отладка (DAP)
         ├── neotest.lua       — тесты
         ├── formatting.lua    — форматирование (conform.nvim)

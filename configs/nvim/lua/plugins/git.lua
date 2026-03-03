@@ -41,30 +41,6 @@ return {
     },
   },
 
-  -- Neogit: magit-like git interface
-  {
-    "NeogitOrg/neogit",
-    cmd = "Neogit",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "sindrets/diffview.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-    keys = {
-      { "<leader>gs", "<cmd>Neogit<CR>", desc = "Git Status (Neogit)" },
-      { "<leader>gc", "<cmd>Neogit commit<CR>", desc = "Git Commit" },
-      { "<leader>gp", "<cmd>Neogit push<CR>", desc = "Git Push" },
-      { "<leader>gl", "<cmd>Neogit pull<CR>", desc = "Git Pull" },
-    },
-    opts = {
-      integrations = { diffview = true, telescope = true },
-      signs = {
-        section = { "", "" },
-        item = { "", "" },
-      },
-    },
-  },
-
   -- Diffview: side-by-side diffs
   {
     "sindrets/diffview.nvim",
@@ -96,17 +72,4 @@ return {
     },
   },
 
-  -- Git worktrees
-  {
-    "ThePrimeagen/git-worktree.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    keys = {
-      { "<leader>gw", function() require("telescope").extensions.git_worktree.git_worktrees() end, desc = "Git Worktrees" },
-      { "<leader>gW", function() require("telescope").extensions.git_worktree.create_git_worktree() end, desc = "Create Worktree" },
-    },
-    config = function()
-      require("git-worktree").setup()
-      require("telescope").load_extension("git_worktree")
-    end,
-  },
 }
