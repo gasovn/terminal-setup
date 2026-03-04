@@ -9,18 +9,18 @@ return {
   { name = 'gitlab-runner', group = 'GitLab', host = '10.0.0.231' },
 
   -- Test Servers
-  { name = 'stage',  group = 'Test Servers', host = '10.0.1.18', cmd = 'cd /opt/pharmhub' },
-  { name = 'test01', group = 'Test Servers', host = '10.0.1.10',             cmd = 'cd /opt/pharmhub' },
-  { name = 'test02', group = 'Test Servers', host = '10.0.1.11', cmd = 'cd /opt/pharmhub' },
-  { name = 'test03', group = 'Test Servers', host = '10.0.1.12', cmd = 'cd /opt/pharmhub' },
-  { name = 'test04', group = 'Test Servers', host = '10.0.1.13',             cmd = 'cd /opt/pharmhub' },
-  { name = 'test05', group = 'Test Servers', host = '10.0.1.14',             cmd = 'cd /opt/pharmhub' },
-  { name = 'test06', group = 'Test Servers', host = '10.0.1.17',             cmd = 'cd /opt/pharmhub' },
-  { name = 'test07', group = 'Test Servers', host = '10.0.1.15',             cmd = 'cd /opt/pharmhub' },
-  { name = 'test08', group = 'Test Servers', host = '10.0.1.19',             cmd = 'cd /opt/pharmhub' },
-  { name = 'test09', group = 'Test Servers', host = '10.0.1.23',             cmd = 'cd /opt/pharmhub' },
-  { name = 'test10', group = 'Test Servers', host = '10.0.1.24', cmd = 'cd /opt/pharmhub' },
-  { name = 'test11', group = 'Test Servers', host = '10.0.1.28',             cmd = 'cd /opt/pharmhub' },
+  { name = 'stage',  group = 'Test Servers', host = '10.0.1.18' },
+  { name = 'test01', group = 'Test Servers', host = '10.0.1.10' },
+  { name = 'test02', group = 'Test Servers', host = '10.0.1.11' },
+  { name = 'test03', group = 'Test Servers', host = '10.0.1.12' },
+  { name = 'test04', group = 'Test Servers', host = '10.0.1.13' },
+  { name = 'test05', group = 'Test Servers', host = '10.0.1.14' },
+  { name = 'test06', group = 'Test Servers', host = '10.0.1.17' },
+  { name = 'test07', group = 'Test Servers', host = '10.0.1.15' },
+  { name = 'test08', group = 'Test Servers', host = '10.0.1.19' },
+  { name = 'test09', group = 'Test Servers', host = '10.0.1.23' },
+  { name = 'test10', group = 'Test Servers', host = '10.0.1.24' },
+  { name = 'test11', group = 'Test Servers', host = '10.0.1.28' },
 
   -- ClickHouse PROD
   { name = 'ch-s1-r1', group = 'ClickHouse PROD', host = '10.0.0.182' },
@@ -60,15 +60,15 @@ return {
   { name = 'vsql3-1', group = 'Vertica', host = '10.0.0.161' },
 
   -- Application
-  { name = 'app-kz',       group = 'Application', host = '10.0.0.200', cmd = 'cd /opt/pharmhub' },
-  { name = 'app-ru',       group = 'Application', host = '10.0.0.154', cmd = 'cd /opt/pharmhub' },
-  { name = 'matchflow-kz', group = 'Application', host = '10.0.0.201', cmd = 'cd /opt/pharmhub' },
-  { name = 'matchflow-ru', group = 'Application', host = '10.0.0.155', cmd = 'cd /opt/pharmhub' },
+  { name = 'app-kz',       group = 'Application', host = '10.0.0.200', cmd = 'sudo -iu deploy' },
+  { name = 'app-ru',       group = 'Application', host = '10.0.0.154', cmd = 'sudo -iu deploy' },
+  { name = 'matchflow-kz', group = 'Application', host = '10.0.0.201', cmd = 'sudo -iu deploy' },
+  { name = 'matchflow-ru', group = 'Application', host = '10.0.0.155', cmd = 'sudo -iu deploy' },
 
   -- Docker
-  { name = 'docker-2-ru', group = 'Docker', host = '10.0.0.152',             cmd = 'cd /opt/pharmhub' },
-  { name = 'docker-kz',   group = 'Docker', host = '10.0.0.202',             cmd = 'cd /opt/pharmhub' },
-  { name = 'docker-ru',   group = 'Docker', host = '10.0.0.153', cmd = 'cd /opt/pharmhub' },
+  { name = 'docker-2-ru', group = 'Docker', host = '10.0.0.152', cmd = 'sudo -iu deploy' },
+  { name = 'docker-kz',   group = 'Docker', host = '10.0.0.202', cmd = 'sudo -iu deploy' },
+  { name = 'docker-ru',   group = 'Docker', host = '10.0.0.153', cmd = 'sudo -iu deploy' },
 
   -- Gate
   { name = 'gate-dev',    group = 'Gate', host = '10.0.1.2' },
