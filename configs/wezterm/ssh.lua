@@ -4,6 +4,7 @@ local M = {}
 
 local DEFAULT_USER = 'nikita.gasov'
 local DEFAULT_PORT = 22
+local DOMAIN_PREFIX = 'SSH:'
 
 -- ── Helpers ──────────────────────────────────────────────────────────
 
@@ -45,7 +46,7 @@ function M.apply(config)
     for _, h in ipairs(hosts) do
         local port = h.port or DEFAULT_PORT
         table.insert(domains, {
-            name = h.name,
+            name = DOMAIN_PREFIX .. h.name,
             remote_address = h.host .. ':' .. port,
             username = h.user or DEFAULT_USER,
         })
@@ -68,7 +69,7 @@ function M.connect_action()
                     if not h then return end
                     -- Spawn tab in the SSH domain via mux API to get the new pane
                     local _tab, new_pane, _mux_win =
-                        w:mux_window():spawn_tab { domain = { DomainName = id } }
+                        w:mux_window():spawn_tab { domain = { DomainName = DOMAIN_PREFIX .. id } }
                     -- Send auto-command after SSH connection establishes
                     if h.cmd and new_pane then
                         wezterm.time.call_after(2, function()
