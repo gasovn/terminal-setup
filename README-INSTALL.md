@@ -164,11 +164,12 @@ wezterm ls-fonts 2>&1 | head -1
 ├── appearance.lua           — тема, шрифт (FiraCode 13), табы (процесс + директория, git dirty ●), GPU
 ├── keybinds.lua             — хоткеи (табы, сплиты, workspaces, SSH, copy mode, мышь)
 ├── kitty-cyrillic-fix.lua   — фикс Kitty protocol для русской раскладки (Shift/Ctrl + кириллица)
-├── ssh.lua                  — SSH domains из ~/.ssh/config
+├── ssh.lua                  — SSH-домены (меню подключений, SFTP) из ssh-hosts.lua
+├── ssh-hosts.lua            — список хостов (группы, авто-команды для SSH-меню)
 ├── workspaces.lua           — workspace по умолчанию
-├── statusbar.lua            — powerline статусбар (workspace, dir, время)
+├── statusbar.lua            — powerline статусбар (workspace, SSH host, dir, время)
 ├── hyperlinks.lua           — URL + file:line ссылки + шаблон для тикетов
-└── utils.lua                — иконки процессов, нормализация имён (version-based бинарники), парсинг SSH, git dirty
+└── utils.lua                — иконки процессов, нормализация имён, git dirty
 ```
 
 ---
@@ -252,7 +253,9 @@ theme catppuccin-mocha   # переключить на Catppuccin Mocha
 
 ## 10. SSH — добавление серверов
 
-Файл: `~/.ssh/config`
+Для добавления нового хоста нужно обновить **два файла**:
+
+### 1. `~/.ssh/config` — для системного ssh и WezTerm SSH-доменов
 
 ```
 # === ГРУППА ===
@@ -260,13 +263,20 @@ Host alias
     HostName 10.0.0.100
     User username
     Port 22
-    # Описание
+```
+
+### 2. `~/.config/wezterm/ssh-hosts.lua` — для меню и авто-команд
+
+```lua
+{ name = 'alias', group = 'Группа', host = '10.0.0.100' },
+-- с авто-командой:
+{ name = 'alias', group = 'Группа', host = '10.0.0.100', cmd = 'sudo -iu deploy' },
 ```
 
 После добавления:
 - `ssh alias` — подключение из терминала
-- `Ctrl+Shift+H` — появится в SSH-меню WezTerm
-- `Ctrl+Shift+F` — появится в SFTP-меню (открывает Dolphin)
+- `Ctrl+Shift+H` — SSH-меню WezTerm (SSH-домен, сплиты на удалённом хосте)
+- `Ctrl+Shift+F` — SFTP-меню (открывает Dolphin)
 
 ---
 
@@ -302,7 +312,7 @@ Host alias
 - **Ctrl+Delete**: удаление слова вперёд. Фикс в `keybinds.lua` (SendString `\e[3;5~`) и `wezterm.fish` (bind → kill-word)
 - **Копирование мышью**: автокопирование при выделении отключено. Копировать: правый клик или Ctrl+Shift+C
 - **Прокрутка мыши**: 3 строки за щелчок колёсика (вместо дефолтных ~5)
-- **Заголовки табов**: шеллы показывают `fish ~/path`, TUI-программы — `process dirname` (например, `claude my-repo`, `nvim my-project`). Жёлтый ● если есть незакоммиченные git-изменения
+- **Заголовки табов**: шеллы показывают `fish ~/path`, TUI-программы — `process dirname` (например, `claude my-repo`, `nvim my-project`), SSH-домены — имя хоста (`stage`, `gitlab`). Жёлтый ● если есть незакоммиченные git-изменения
 - **Нормализация процессов**: Claude Code использует version-based бинарник (`~/.local/share/claude/versions/X.Y.Z`), `utils.lua` нормализует имя обратно в "claude"
 
 ---
@@ -334,7 +344,8 @@ WezTerm с включённым Kitty keyboard protocol (`enable_kitty_keyboard 
 Формат заголовка зависит от типа процесса:
 - **Шеллы** (fish, bash, zsh): `fish ~/code/my-repo`
 - **TUI-программы** (claude, nvim, lazygit и др.): `claude my-repo` — имя процесса + название директории
-- **SSH**: `ssh hostname`
+- **SSH-домен**: `hostname` — имя хоста из домена (например, `stage`, `gitlab`)
+- **SSH (обычный)**: `ssh hostname`
 
 Жёлтый символ ● в конце заголовка если в текущей директории есть незакоммиченные git-изменения. Реализация в `utils.lua` (`git_dirty()`) с кэшированием (5 сек TTL).
 
