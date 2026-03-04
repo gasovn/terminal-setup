@@ -59,8 +59,8 @@ function M.connect_action()
                     if not id or id == '' then return end
                     local h = find_host(id)
                     if not h then return end
-                    -- Use SSHMUX: domain — auto-generated from ~/.ssh/config
-                    local domain_name = 'SSHMUX:' .. id
+                    -- Use SSH: domain — no WezTerm needed on remote host
+                    local domain_name = 'SSH:' .. id
                     local _tab, new_pane, _mux_win =
                         w:mux_window():spawn_tab { domain = { DomainName = domain_name } }
                     -- Send auto-command after SSH connection establishes
