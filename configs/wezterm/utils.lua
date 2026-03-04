@@ -57,28 +57,6 @@ function M.shorten_path(path)
     return '…/' .. parts[#parts - 1] .. '/' .. parts[#parts]
 end
 
--- Parse ~/.ssh/config → list of {name, group}
-function M.parse_ssh_config()
-    local hosts = {}
-    local home = os.getenv('HOME') or ''
-    local f = io.open(home .. '/.ssh/config', 'r')
-    if not f then return hosts end
-
-    local group = ''
-    for line in f:lines() do
-        local comment = line:match('^#%s*===(.+)===%s*$')
-        if comment then
-            group = comment:match('^%s*(.-)%s*$') or ''
-        end
-        local host = line:match('^Host%s+(%S+)')
-        if host and host ~= '*' then
-            table.insert(hosts, { name = host, group = group })
-        end
-    end
-    f:close()
-    return hosts
-end
-
 -- Check if directory has uncommitted git changes (cached, 5s TTL)
 -- Uses io.popen because wezterm.run_child_process can't be called
 -- from synchronous callbacks like format-tab-title.
