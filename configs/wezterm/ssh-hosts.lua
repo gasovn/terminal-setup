@@ -5,21 +5,21 @@
 
 return {
   -- GitLab
-  { name = 'gitlab',        group = 'GitLab', host = '10.0.0.230',       port = 2200 },
-  { name = 'gitlab-runner', group = 'GitLab', host = '10.0.0.231',       port = 2200 },
+  { name = 'gitlab',        group = 'GitLab', host = '10.0.0.230', port = 2112 },
+  { name = 'gitlab-runner', group = 'GitLab', host = '10.0.0.231' },
 
   -- Test Servers
-  { name = 'stage',  group = 'Test Servers', host = '10.0.1.18', port = 2200, cmd = 'cd /opt/pharmhub' },
+  { name = 'stage',  group = 'Test Servers', host = '10.0.1.18', cmd = 'cd /opt/pharmhub' },
   { name = 'test01', group = 'Test Servers', host = '10.0.1.10',             cmd = 'cd /opt/pharmhub' },
-  { name = 'test02', group = 'Test Servers', host = '10.0.1.11', port = 2200, cmd = 'cd /opt/pharmhub' },
-  { name = 'test03', group = 'Test Servers', host = '10.0.1.12', port = 2200, cmd = 'cd /opt/pharmhub' },
+  { name = 'test02', group = 'Test Servers', host = '10.0.1.11', cmd = 'cd /opt/pharmhub' },
+  { name = 'test03', group = 'Test Servers', host = '10.0.1.12', cmd = 'cd /opt/pharmhub' },
   { name = 'test04', group = 'Test Servers', host = '10.0.1.13',             cmd = 'cd /opt/pharmhub' },
   { name = 'test05', group = 'Test Servers', host = '10.0.1.14',             cmd = 'cd /opt/pharmhub' },
   { name = 'test06', group = 'Test Servers', host = '10.0.1.17',             cmd = 'cd /opt/pharmhub' },
   { name = 'test07', group = 'Test Servers', host = '10.0.1.15',             cmd = 'cd /opt/pharmhub' },
   { name = 'test08', group = 'Test Servers', host = '10.0.1.19',             cmd = 'cd /opt/pharmhub' },
   { name = 'test09', group = 'Test Servers', host = '10.0.1.23',             cmd = 'cd /opt/pharmhub' },
-  { name = 'test10', group = 'Test Servers', host = '10.0.1.24', port = 2112, cmd = 'cd /opt/pharmhub' },
+  { name = 'test10', group = 'Test Servers', host = '10.0.1.24', cmd = 'cd /opt/pharmhub' },
   { name = 'test11', group = 'Test Servers', host = '10.0.1.28',             cmd = 'cd /opt/pharmhub' },
 
   -- ClickHouse PROD
@@ -35,7 +35,7 @@ return {
   { name = 'chk-2', group = 'ClickHouse Keeper', host = '10.0.0.136' },
   { name = 'chk-3', group = 'ClickHouse Keeper', host = '10.0.0.137' },
   { name = 'chk-4', group = 'ClickHouse Keeper', host = '10.0.0.138' },
-  { name = 'chk-5', group = 'ClickHouse Keeper', host = '10.0.0.139', port = 2200 },
+  { name = 'chk-5', group = 'ClickHouse Keeper', host = '10.0.0.139' },
 
   -- ClickHouse DEV
   { name = 'clickhouse-test1', group = 'ClickHouse DEV', host = '10.0.1.25' },
@@ -43,15 +43,15 @@ return {
   { name = 'clickhouse-test3', group = 'ClickHouse DEV', host = '10.0.1.27' },
   { name = 'dev-ch-s1-r1',    group = 'ClickHouse DEV', host = '10.0.1.41' },
   { name = 'dev-ch-s2-r1',    group = 'ClickHouse DEV', host = '10.0.1.42' },
-  { name = 'dev-ch-s3-r1',    group = 'ClickHouse DEV', host = '10.0.1.43', port = 2122 },
+  { name = 'dev-ch-s3-r1',    group = 'ClickHouse DEV', host = '10.0.1.43' },
 
   -- PostgreSQL
   { name = 'psql-master', group = 'PostgreSQL', host = '10.0.0.170' },
   { name = 'psql1',       group = 'PostgreSQL', host = '10.0.0.171' },
-  { name = 'psql2',       group = 'PostgreSQL', host = '10.0.0.172', port = 2200 },
+  { name = 'psql2',       group = 'PostgreSQL', host = '10.0.0.172' },
   { name = 'psql3',       group = 'PostgreSQL', host = '10.0.0.173' },
   { name = 'psql4',       group = 'PostgreSQL', host = '10.0.0.174' },
-  { name = 'psql5',       group = 'PostgreSQL', host = '10.0.0.175', port = 2200 },
+  { name = 'psql5',       group = 'PostgreSQL', host = '10.0.0.175' },
   { name = 'psql6',       group = 'PostgreSQL', host = '10.0.0.176' },
 
   -- Vertica
@@ -68,7 +68,7 @@ return {
   -- Docker
   { name = 'docker-2-ru', group = 'Docker', host = '10.0.0.152',             cmd = 'cd /opt/pharmhub' },
   { name = 'docker-kz',   group = 'Docker', host = '10.0.0.202',             cmd = 'cd /opt/pharmhub' },
-  { name = 'docker-ru',   group = 'Docker', host = '10.0.0.153', port = 2200, cmd = 'cd /opt/pharmhub' },
+  { name = 'docker-ru',   group = 'Docker', host = '10.0.0.153', cmd = 'cd /opt/pharmhub' },
 
   -- Gate
   { name = 'gate-dev',    group = 'Gate', host = '10.0.1.2' },
@@ -80,7 +80,7 @@ return {
   { name = 'ftp-dev',  group = 'Storage & FTP', host = '89.108.120.2' },
   { name = 'ftp-new',  group = 'Storage & FTP', host = '213.232.228.181', port = 2200 },
   { name = 'storage1', group = 'Storage & FTP', host = '10.0.0.146' },
-  { name = 'storage2', group = 'Storage & FTP', host = '10.0.0.147',      port = 2200 },
+  { name = 'storage2', group = 'Storage & FTP', host = '10.0.0.147' },
   { name = 'storagev', group = 'Storage & FTP', host = '10.0.0.145' },
 
   -- ML

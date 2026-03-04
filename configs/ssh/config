@@ -17,20 +17,18 @@ Host gitlab.pharmhub.ru
 Host gitlab
     HostName 10.0.0.230
     User nikita.gasov
-    Port 2200
+    Port 2112
     # GITLAB
 
 Host gitlab-runner
     HostName 10.0.0.231
     User nikita.gasov
-    Port 2200
     # GITLAB Runner
 
 # === Test Servers ===
 Host stage
     HostName 10.0.1.18
     User nikita.gasov
-    Port 2200
     # Stage
 
 Host test01
@@ -41,13 +39,11 @@ Host test01
 Host test02
     HostName 10.0.1.11
     User nikita.gasov
-    Port 2200
     # Test02
 
 Host test03
     HostName 10.0.1.12
     User nikita.gasov
-    Port 2200
     # Test03
 
 Host test04
@@ -83,7 +79,6 @@ Host test09
 Host test10
     HostName 10.0.1.24
     User nikita.gasov
-    Port 2112
     # Test10
 
 Host test11
@@ -146,7 +141,6 @@ Host chk-4
 Host chk-5
     HostName 10.0.0.139
     User nikita.gasov
-    Port 2200
     # CHK-5
 
 # === ClickHouse DEV ===
@@ -178,7 +172,6 @@ Host dev-ch-s2-r1
 Host dev-ch-s3-r1
     HostName 10.0.1.43
     User nikita.gasov
-    Port 2122
     # DEV-CH-S3-R1
 
 # === PostgreSQL ===
@@ -195,7 +188,6 @@ Host psql1
 Host psql2
     HostName 10.0.0.172
     User nikita.gasov
-    Port 2200
     # PSQL2
 
 Host psql3
@@ -211,7 +203,6 @@ Host psql4
 Host psql5
     HostName 10.0.0.175
     User nikita.gasov
-    Port 2200
     # PSQL5
 
 Host psql6
@@ -270,7 +261,6 @@ Host docker-kz
 Host docker-ru
     HostName 10.0.0.153
     User nikita.gasov
-    Port 2200
     # Docker
 
 # === Gate ===
@@ -315,7 +305,6 @@ Host storage1
 Host storage2
     HostName 10.0.0.147
     User nikita.gasov
-    Port 2200
     # Storage2
 
 Host storagev

@@ -2,9 +2,7 @@ local wezterm = require 'wezterm'
 local hosts = require 'ssh-hosts'
 local M = {}
 
-local DEFAULT_USER = 'nikita.gasov'
 local DEFAULT_PORT = 22
-local DOMAIN_PREFIX = 'SSH:'
 
 -- ── Helpers ──────────────────────────────────────────────────────────
 
@@ -41,17 +39,11 @@ end
 
 -- ── SSH domains ──────────────────────────────────────────────────────
 
+-- Use WezTerm's auto-generated domains from ~/.ssh/config.
+-- They correctly inherit all SSH settings (ports, keys, proxy, etc.).
+-- ssh-hosts.lua provides only UI metadata: groups and auto-commands.
 function M.apply(config)
-    local domains = {}
-    for _, h in ipairs(hosts) do
-        local port = h.port or DEFAULT_PORT
-        table.insert(domains, {
-            name = DOMAIN_PREFIX .. h.name,
-            remote_address = h.host .. ':' .. port,
-            username = h.user or DEFAULT_USER,
-        })
-    end
-    config.ssh_domains = domains
+    config.ssh_domains = wezterm.default_ssh_domains()
 end
 
 -- ── SSH connect menu ─────────────────────────────────────────────────
@@ -67,9 +59,10 @@ function M.connect_action()
                     if not id or id == '' then return end
                     local h = find_host(id)
                     if not h then return end
-                    -- Spawn tab in the SSH domain via mux API to get the new pane
+                    -- Use SSHMUX: domain — auto-generated from ~/.ssh/config
+                    local domain_name = 'SSHMUX:' .. id
                     local _tab, new_pane, _mux_win =
-                        w:mux_window():spawn_tab { domain = { DomainName = DOMAIN_PREFIX .. id } }
+                        w:mux_window():spawn_tab { domain = { DomainName = domain_name } }
                     -- Send auto-command after SSH connection establishes
                     if h.cmd and new_pane then
                         wezterm.time.call_after(2, function()
