@@ -156,12 +156,17 @@ function M.apply(config)
         local icon = utils.get_process_icon(process)
         local idx = tab.tab_index + 1
 
-        -- Shells: always show "process cwd" (fish abbreviates paths too aggressively)
-        -- Other programs (nvim, claude, ssh): keep their custom pane title
         local shells = { fish = true, bash = true, zsh = true }
         local title
         local dir
-        if shells[process] then
+
+        -- SSH domain: show hostname from domain name (e.g. "SSH:stage" → "stage")
+        local domain = pane.domain_name or ''
+        local ssh_host_name = domain:match('^SSH:(.+)')
+        if ssh_host_name then
+            icon = '󰣀'
+            title = ssh_host_name
+        elseif shells[process] then
             local cwd = pane.current_working_dir
             if cwd then
                 dir = cwd.file_path or tostring(cwd)
