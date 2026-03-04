@@ -27,10 +27,18 @@
 | `Ctrl+Shift+S` | Список workspaces |
 | `Ctrl+Shift+N` | Новый workspace |
 
-### SSH / Прочее
+### SSH / SFTP
 | Хоткей | Действие |
 |--------|----------|
-| `Ctrl+Shift+H` | SSH меню (из ~/.ssh/config) |
+| `Ctrl+Shift+H` | SSH меню (группы хостов, fuzzy-поиск, SSH-домены) |
+| `Ctrl+Shift+F` | SFTP меню (открыть в Dolphin) |
+
+> В SSH-домене сплиты (`Ctrl+Shift+\`) открываются на **удалённом хосте**.
+> Прод-серверы (app/matchflow/docker -ru/-kz) автоматически переключаются на пользователя deploy.
+
+### Прочее
+| Хоткей | Действие |
+|--------|----------|
 | `Ctrl+Shift+X` | Copy mode (vim-навигация) |
 | `Ctrl+Shift+Space` | Quick select (URL, IP, хеши) |
 | `Ctrl+Shift+P` | Command palette |
@@ -102,38 +110,34 @@
 
 ## SSH — добавление серверов
 
-Файл: `~/.ssh/config`
+Для добавления нового хоста нужно обновить **два файла**:
 
+1. **`~/.ssh/config`** — для системного ssh и WezTerm SSH-доменов:
 ```
-# === ПРОЕКТ: Production ===
-Host prod-web
-    HostName 10.0.1.10
-    User deploy
-    Port 22
-    IdentityFile ~/.ssh/id_rsa
-
-Host prod-db
-    HostName 10.0.1.11
-    User admin
-    IdentityFile ~/.ssh/id_rsa
-
-# === ПРОЕКТ: Staging ===
-Host staging-web
-    HostName 10.0.2.10
-    User deploy
-    IdentityFile ~/.ssh/staging_key
+# === Группа ===
+Host myhost
+    HostName 10.0.1.50
+    User nikita.gasov
 ```
 
-После добавления хоста он автоматически появится в меню `Ctrl+Shift+H`.
-Комментарий `# === ГРУППА ===` группирует хосты в меню.
+2. **`~/.config/wezterm/ssh-hosts.lua`** — для меню и авто-команд:
+```lua
+{ name = 'myhost', group = 'Группа', host = '10.0.1.50' },
+-- с авто-командой:
+{ name = 'myhost', group = 'Группа', host = '10.0.1.50', cmd = 'sudo -iu deploy' },
+```
+
+После изменений хост появится в меню `Ctrl+Shift+H`.
 
 ## Структура конфигов
 
 ```
 ~/.config/wezterm/          — WezTerm (Lua, модульный)
+  ssh-hosts.lua             — список хостов (группы, авто-команды)
+  ssh.lua                   — SSH-домены и меню подключений
 ~/.config/fish/             — Fish shell
 ~/.config/starship.toml     — Starship prompt
-~/.ssh/config               — SSH серверы
+~/.ssh/config               — SSH серверы (порты, ключи)
 ```
 
 Бэкап старых конфигов: `~/config-backup-2026-02-27/`
