@@ -1,6 +1,6 @@
 local wezterm = require 'wezterm'
 local act = wezterm.action
-local utils = require 'utils'
+local ssh = require 'ssh'
 local M = {}
 
 function M.apply(config)
@@ -79,71 +79,10 @@ function M.apply(config)
         },
 
         -- ═══ SSH quick connect ═══
-        {
-            key = 'h',
-            mods = 'CTRL|SHIFT',
-            action = wezterm.action_callback(function(window, pane)
-                local hosts = utils.parse_ssh_config()
-                local choices = {}
-                for _, host in ipairs(hosts) do
-                    local label = host.name
-                    if host.group ~= '' then
-                        label = host.group .. ' │ ' .. host.name
-                    end
-                    table.insert(choices, { id = host.name, label = '󰣀 ' .. label })
-                end
-                if #choices == 0 then
-                    table.insert(choices, { id = '', label = 'No hosts in ~/.ssh/config' })
-                end
-                window:perform_action(
-                    act.InputSelector {
-                        title = '  SSH Connect',
-                        choices = choices,
-                        action = wezterm.action_callback(function(w, p, id, label)
-                            if id and id ~= '' then
-                                w:perform_action(
-                                    act.SpawnCommandInNewTab { args = { 'ssh', id } },
-                                    p
-                                )
-                            end
-                        end),
-                    },
-                    pane
-                )
-            end),
-        },
+        { key = 'h', mods = 'CTRL|SHIFT', action = ssh.connect_action() },
 
         -- ═══ SFTP via Dolphin ═══
-        {
-            key = 'f',
-            mods = 'CTRL|SHIFT',
-            action = wezterm.action_callback(function(window, pane)
-                local hosts = utils.parse_ssh_config()
-                local choices = {}
-                for _, host in ipairs(hosts) do
-                    local label = host.name
-                    if host.group ~= '' then
-                        label = host.group .. ' │ ' .. host.name
-                    end
-                    table.insert(choices, { id = host.name, label = '󰉋 ' .. label })
-                end
-                if #choices == 0 then
-                    table.insert(choices, { id = '', label = 'No hosts in ~/.ssh/config' })
-                end
-                window:perform_action(
-                    act.InputSelector {
-                        title = '󰉋  SFTP — Open in Dolphin',
-                        choices = choices,
-                        action = wezterm.action_callback(function(w, p, id, label)
-                            if id and id ~= '' then
-                                wezterm.run_child_process { 'dolphin', 'sftp://' .. id .. '/' }
-                            end
-                        end),
-                    },
-                    pane
-                )
-            end),
-        },
+        { key = 'f', mods = 'CTRL|SHIFT', action = ssh.sftp_action() },
 
         -- ═══ Copy mode ═══
         { key = 'x', mods = 'CTRL|SHIFT', action = act.ActivateCopyMode },
