@@ -7,6 +7,7 @@ return {
         { "<leader>b", group = "Buffers" },
         { "<leader>c", group = "Code" },
         { "<leader>d", group = "Debug" },
+        { "<leader>m", group = "Markdown" },
         { "<leader>f", group = "Find (Telescope)" },
         { "<leader>g", group = "Git" },
         { "<leader>q", group = "Quit/Session" },
