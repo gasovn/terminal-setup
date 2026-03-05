@@ -84,6 +84,62 @@ function M.apply(config)
         -- ═══ SFTP via Dolphin ═══
         { key = 'f', mods = 'CTRL|SHIFT', action = ssh.sftp_action() },
 
+        -- ═══ Browse directories → open nvim in new tab ═══
+        {
+            key = 'e',
+            mods = 'CTRL|SHIFT',
+            action = wezterm.action_callback(function(window, pane)
+                local cwd_url = pane:get_current_working_dir()
+                if not cwd_url then return end
+                local cwd = cwd_url.file_path
+
+                local success, stdout, stderr = wezterm.run_child_process {
+                    'find', cwd, '-maxdepth', '1', '-mindepth', '1',
+                    '-type', 'd', '-not', '-name', '.*',
+                }
+                if not success or not stdout then return end
+
+                local choices = {}
+                for line in stdout:gmatch('[^\n]+') do
+                    local name = line:match('([^/]+)$')
+                    if name then
+                        local label = name
+                        local ok, branch_out = wezterm.run_child_process {
+                            'git', '-C', line, 'rev-parse', '--abbrev-ref', 'HEAD',
+                        }
+                        if ok and branch_out then
+                            local branch = branch_out:gsub('%s+$', '')
+                            if branch ~= '' then
+                                label = name .. ' (' .. branch .. ')'
+                            end
+                        end
+                        table.insert(choices, { label = label, id = line })
+                    end
+                end
+                if #choices == 0 then return end
+
+                table.sort(choices, function(a, b) return a.label < b.label end)
+
+                window:perform_action(
+                    act.InputSelector {
+                        title = '  Open directory in nvim',
+                        choices = choices,
+                        fuzzy = true,
+                        action = wezterm.action_callback(function(w, p, id, label)
+                            if not id then return end
+                            local _tab, new_pane, _win = w:mux_window():spawn_tab {
+                                cwd = id,
+                            }
+                            if new_pane then
+                                new_pane:send_text('nvim .\n')
+                            end
+                        end),
+                    },
+                    pane
+                )
+            end),
+        },
+
         -- ═══ Copy mode ═══
         { key = 'x', mods = 'CTRL|SHIFT', action = act.ActivateCopyMode },
 
