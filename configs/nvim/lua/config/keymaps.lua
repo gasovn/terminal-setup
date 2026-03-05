@@ -43,3 +43,8 @@ map("n", "N", "Nzzzv", { desc = "Prev search centered" })
 
 -- Paste without yanking replaced text
 map("x", "<leader>p", [["_dP]], { desc = "Paste without yank" })
+
+-- Open current file's directory in system file manager
+map("n", "<leader>O", function()
+  vim.fn.jobstart({ "dolphin", vim.fn.expand("%:p:h") }, { detach = true })
+end, { desc = "Open in Dolphin" })

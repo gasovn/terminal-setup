@@ -24,6 +24,7 @@ Leader key: `Space`
 |---|---|
 | `<leader>e` | Toggle file explorer (Neo-tree) |
 | `<leader>E` | Reveal current file in explorer |
+| `<leader>O` | Open current directory in Dolphin |
 | `<leader>o` | Toggle code outline (Aerial) |
 | `R` (in Neo-tree) | Refresh file tree |
 | `Y` (in Neo-tree) | Copy relative path |
