@@ -36,6 +36,9 @@ function M.apply(config)
         { key = '7', mods = 'CTRL|SHIFT', action = act.ActivateTab(6) },
         { key = '8', mods = 'CTRL|SHIFT', action = act.ActivateTab(7) },
         { key = '9', mods = 'CTRL|SHIFT', action = act.ActivateTab(8) },
+        -- Move tab left/right
+        { key = '<', mods = 'CTRL|SHIFT', action = act.MoveTabRelative(-1) },
+        { key = '>', mods = 'CTRL|SHIFT', action = act.MoveTabRelative(1) },
 
         -- ═══ Splits (panes) ═══
         -- Vertical split (pane to the right)
