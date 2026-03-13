@@ -115,6 +115,7 @@ function M.apply(config)
         },
         split = c.surface1,
         visual_bell = c.surface0,
+        scrollbar_thumb = c.overlay1,
     }
 
     -- Visual bell (no sound)
