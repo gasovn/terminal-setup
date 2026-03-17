@@ -9,7 +9,8 @@ function M.apply(config)
 
     config.keys = {
         -- ═══ Tabs ═══
-        { key = 't', mods = 'CTRL|SHIFT', action = act.SpawnTab 'CurrentPaneDomain' },
+        { key = 't', mods = 'CTRL|SHIFT', action = act.SpawnTab 'DefaultDomain' },
+        { key = 't', mods = 'CTRL|SHIFT|ALT', action = act.SpawnTab 'CurrentPaneDomain' },
         { key = 'q', mods = 'CTRL|SHIFT', action = act.CloseCurrentTab { confirm = true } },
         -- Ctrl+Tab: MRU tab switch (toggle between last two used tabs)
         {
