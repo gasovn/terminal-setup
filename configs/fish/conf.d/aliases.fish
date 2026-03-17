@@ -31,3 +31,5 @@ abbr -a .... 'cd ../../..'
 # --- Quick access ---
 abbr -a v 'nvim'
 abbr -a cls 'clear'
+abbr -a cdc 'cd ~/code'
+abbr -a cdl 'cd ~/code/homelab'

@@ -180,7 +180,7 @@ wezterm ls-fonts 2>&1 | head -1
 ~/.config/fish/
 ├── config.fish           — Starship, zoxide, fzf, pyenv
 ├── conf.d/
-│   ├── aliases.fish      — abbreviations (ls→eza, cat→bat, git, docker)
+│   ├── aliases.fish      — abbreviations (ls→eza, cat→bat, git, docker, cdc→~/code, cdl→~/code/homelab)
 │   ├── theme.fish        — цвета для подсветки синтаксиса (управляется theme switcher)
 │   ├── env.fish          — LANG, EDITOR, PAGER, Rust/Go/Node переменные
 │   ├── path.fish         — PATH (.local/bin, cargo, go, npm-global, opencode)
@@ -285,7 +285,7 @@ Host alias
 | Хоткей | Действие |
 |--------|----------|
 | `Ctrl+Shift+T` | Новый таб (домашний каталог) |
-| `Ctrl+Shift+Alt+T` | Новый таб (текущий каталог) |
+| `Ctrl+Shift+Enter` | Новый таб (текущий каталог) |
 | `Ctrl+Tab` | Переключение на последний используемый таб (MRU) |
 | `Ctrl+Shift+Tab` | Предыдущий таб (последовательно) |
 | `Ctrl+Shift+1..9` | Таб по номеру |
