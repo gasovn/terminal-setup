@@ -53,7 +53,7 @@ function M.apply(config)
     -- Window
     config.window_background_opacity = 0.95
     config.window_decorations = 'TITLE | RESIZE'
-    config.window_padding = { left = 10, right = 10, top = 8, bottom = 8 }
+    config.window_padding = { left = 10, right = 20, top = 8, bottom = 8 }
     config.initial_cols = 170
     config.initial_rows = 42
 
