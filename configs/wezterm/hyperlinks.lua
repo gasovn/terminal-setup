@@ -4,11 +4,11 @@ local M = {}
 function M.apply(config)
     config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
-    -- File paths with line numbers: src/main.go:42 → open in editor
+    -- File paths with line numbers: src/main.go:42 → open in Neovim
     -- Matches patterns like: path/file.ext:line or path/file.ext:line:col
     table.insert(config.hyperlink_rules, {
         regex = [[[a-zA-Z0-9_./-]+\.[a-zA-Z0-9]+:\d+(?::\d+)?]],
-        format = 'file://$0',
+        format = 'nvim://$0',
     })
 
     -- Custom pattern template (uncomment and adjust URL):
