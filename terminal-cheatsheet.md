@@ -43,6 +43,13 @@
 > В SSH-домене сплиты (`Ctrl+Shift+\`) открываются на **удалённом хосте**.
 > Прод-серверы (app/matchflow/docker -ru/-kz) автоматически переключаются на пользователя deploy.
 
+### Навигация в Neovim (cross-pane)
+| Хоткей | Действие |
+|--------|----------|
+| `Ctrl+Click` на `file:line` | Открыть файл в Neovim в соседнем pane на нужной строке |
+
+> Работает когда nvim запущен в соседнем pane того же таба. Относительные пути резолвятся от cwd терминального pane.
+
 ### Прочее
 | Хоткей | Действие |
 |--------|----------|
@@ -144,6 +151,7 @@ Host myhost
 ~/.config/wezterm/          — WezTerm (Lua, модульный)
   ssh-hosts.lua             — список хостов (группы, авто-команды)
   ssh.lua                   — SSH-домены и меню подключений
+  nvim-open.lua             — Ctrl+Click file:line → открытие в Neovim (cross-pane)
 ~/.config/fish/             — Fish shell
 ~/.config/starship.toml     — Starship prompt
 ~/.ssh/config               — SSH серверы (порты, ключи)

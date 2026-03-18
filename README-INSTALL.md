@@ -148,7 +148,7 @@ wezterm ls-fonts 2>&1 | head -1
 | Компонент | Расположение конфига |
 |-----------|---------------------|
 | Themes | `~/.config/themes/` (каталоги тем) + `~/.config/current-theme` |
-| WezTerm | `~/.config/wezterm/` (9 lua-файлов) |
+| WezTerm | `~/.config/wezterm/` (10 lua-файлов) |
 | Fish | `~/.config/fish/` (config.fish + conf.d/ + functions/ + completions/) |
 | Starship | `~/.config/starship.toml` |
 | Neovim | `~/.config/nvim/` (init.lua + lua/config/ + lua/plugins/ — 33 файла) |
@@ -168,7 +168,8 @@ wezterm ls-fonts 2>&1 | head -1
 ├── ssh-hosts.lua            — список хостов (группы, авто-команды для SSH-меню)
 ├── workspaces.lua           — workspace по умолчанию
 ├── statusbar.lua            — powerline статусбар (workspace, SSH host, dir, время)
-├── hyperlinks.lua           — URL + file:line ссылки + шаблон для тикетов
+├── hyperlinks.lua           — URL + file:line ссылки (nvim:// scheme) + шаблон для тикетов
+├── nvim-open.lua            — Ctrl+Click file:line → открытие в Neovim через RPC (cross-pane)
 └── utils.lua                — иконки процессов, нормализация имён, git dirty
 ```
 
@@ -208,7 +209,7 @@ wezterm ls-fonts 2>&1 | head -1
     ├── config/
     │   ├── options.lua   — базовые настройки, langmap (кириллица в Normal mode)
     │   ├── keymaps.lua   — хоткеи (leader=Space)
-    │   └── autocmds.lua  — автокоманды (автосохранение, позиция курсора)
+    │   └── autocmds.lua  — автокоманды (автосохранение, позиция курсора, WezTerm RPC сокет)
     └── plugins/          — 33 файла: по одному на плагин/группу
         ├── colorscheme.lua   — Gruvbox Material (через theme switcher)
         ├── lualine.lua       — статусбар
@@ -306,6 +307,7 @@ Host alias
 | `Ctrl+Shift+P` | Command palette |
 | `Ctrl+Shift+C/V` | Копировать / вставить |
 | `Правый клик` | Копировать выделенное в буфер |
+| `Ctrl+Click` на `file:line` | Открыть в Neovim (соседний pane) |
 | `Ctrl+Shift+K` | Очистить экран |
 
 ### Особенности
