@@ -34,7 +34,6 @@ function M.setup()
         -- Uses `test -S` because io.open() cannot detect Unix socket files
         local tab = pane:tab()
         local current_id = pane:pane_id()
-        local nvim_pane = nil
         local nvim_pane_idx = nil
         local socket = nil
 
@@ -43,7 +42,6 @@ function M.setup()
                 local candidate = '/tmp/nvim-wez-' .. p:pane_id() .. '.sock'
                 local ok = os.execute('test -S "' .. candidate .. '"')
                 if ok then
-                    nvim_pane = p
                     nvim_pane_idx = idx - 1  -- WezTerm uses 0-based index
                     socket = candidate
                     break
@@ -65,9 +63,13 @@ function M.setup()
             cmd = string.format('<C-\\><C-n>:e %s<CR>:%sG%s|<CR>', escaped_file, line, col)
         end
 
-        wezterm.run_child_process {
+        local success, _, stderr = wezterm.run_child_process {
             'nvim', '--server', socket, '--remote-send', cmd,
         }
+        if not success then
+            wezterm.log_warn('nvim-open: remote-send failed: ' .. (stderr or ''))
+            return false
+        end
 
         -- Focus the nvim pane
         window:perform_action(act.ActivatePaneByIndex(nvim_pane_idx), pane)
