@@ -85,4 +85,20 @@ if wez_pane then
       os.remove(socket_path)
     end,
   })
+
+  -- Open file at line, called via --remote-expr from WezTerm's nvim-open module.
+  -- Uses RPC instead of --remote-send to bypass terminal/insert mode issues.
+  function _G.wezterm_open(file, line)
+    -- Find a window with a regular buffer (skip terminal, neo-tree, etc.)
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      local bt = vim.api.nvim_get_option_value("buftype", { buf = buf })
+      if bt == "" then
+        vim.api.nvim_set_current_win(win)
+        break
+      end
+    end
+    vim.cmd("edit +" .. line .. " " .. vim.fn.fnameescape(file))
+    return "ok"
+  end
 end

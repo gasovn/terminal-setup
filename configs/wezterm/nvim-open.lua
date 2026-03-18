@@ -11,9 +11,9 @@ function M.setup()
             return
         end
 
-        -- Parse file:line[:col] — try 3-group first, then 2-group
-        local file, line, col
-        file, line, col = file_line:match('^(.+):(%d+):(%d+)$')
+        -- Parse file:line (strip optional :col suffix)
+        local file, line
+        file, line = file_line:match('^(.+):(%d+):%d+$')
         if not file then
             file, line = file_line:match('^(.+):(%d+)$')
         end
@@ -54,20 +54,16 @@ function M.setup()
             return false
         end
 
-        -- Escape spaces in file path for nvim :e command
-        local escaped_file = file:gsub(' ', '\\ ')
-
-        -- Build nvim command: exit to normal mode, open file, go to line
-        local cmd = string.format('<C-\\><C-n>:e %s<CR>:%sG<CR>', escaped_file, line)
-        if col then
-            cmd = string.format('<C-\\><C-n>:e %s<CR>:%sG%s|<CR>', escaped_file, line, col)
-        end
+        -- Call _G.wezterm_open() in nvim via RPC (--remote-expr).
+        -- This bypasses terminal/insert mode — works regardless of nvim state.
+        local escaped = file:gsub("\\", "\\\\"):gsub("'", "\\'")
+        local expr = string.format("v:lua.wezterm_open('%s', %s)", escaped, line)
 
         local success, _, stderr = wezterm.run_child_process {
-            'nvim', '--server', socket, '--remote-send', cmd,
+            'nvim', '--server', socket, '--remote-expr', expr,
         }
         if not success then
-            wezterm.log_warn('nvim-open: remote-send failed: ' .. (stderr or ''))
+            wezterm.log_warn('nvim-open: remote-expr failed: ' .. (stderr or ''))
             return false
         end
 
