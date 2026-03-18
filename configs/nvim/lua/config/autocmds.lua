@@ -63,3 +63,26 @@ autocmd("VimEnter", {
     end
   end,
 })
+
+-- WezTerm integration: auto-start RPC socket for cross-pane navigation
+local wez_pane = os.getenv("WEZTERM_PANE")
+if wez_pane then
+  local socket_path = "/tmp/nvim-wez-" .. wez_pane .. ".sock"
+
+  autocmd("VimEnter", {
+    group = augroup("WezTermSocket", { clear = true }),
+    callback = function()
+      -- Remove stale socket from previous crash
+      os.remove(socket_path)
+      vim.fn.serverstart(socket_path)
+    end,
+  })
+
+  autocmd("VimLeave", {
+    group = augroup("WezTermSocketCleanup", { clear = true }),
+    callback = function()
+      vim.fn.serverstop(socket_path)
+      os.remove(socket_path)
+    end,
+  })
+end
