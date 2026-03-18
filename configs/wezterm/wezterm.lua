@@ -12,5 +12,6 @@ require('ssh').apply(config)
 require('workspaces').apply(config)
 require('hyperlinks').apply(config)
 require('statusbar').setup()
+require('nvim-open').setup()
 
 return config
