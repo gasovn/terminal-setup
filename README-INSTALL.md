@@ -223,11 +223,12 @@ wezterm ls-fonts 2>&1 | head -1
         ├── formatting.lua    — форматирование (conform.nvim)
         ├── linting.lua       — линтинг (nvim-lint)
         ├── neo-tree.lua      — файловый менеджер с git status иконками
+        ├── ui.lua            — UI: indent guides, TODO comments, dressing, zen mode, scrollbar (nvim-scrollview), colorizer
         ├── terminal.lua      — toggleterm
         ├── session.lua       — авто-сессии
         └── ... (aerial, alpha, bufferline, database, editing, flash,
             harpoon, lang-*, markdown, noice, packages, rest,
-            spectre, trouble, ui, which-key)
+            spectre, trouble, which-key)
 ```
 
 ---

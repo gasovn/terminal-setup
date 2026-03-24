@@ -48,6 +48,16 @@ return {
     },
   },
 
+  -- Scrollbar
+  {
+    "dstein64/nvim-scrollview",
+    event = "VeryLazy",
+    opts = {
+      scrollview_mode = "virtual",
+      scrollview_winblend = 50,
+    },
+  },
+
   -- Colorizer (color preview in CSS/HTML)
   {
     "NvChad/nvim-colorizer.lua",

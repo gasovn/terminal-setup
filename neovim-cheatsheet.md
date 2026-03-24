@@ -30,6 +30,8 @@ Leader key: `Space`
 | `Y` (in Neo-tree) | Copy relative path |
 | `gy` (in Neo-tree) | Copy absolute path |
 
+Scrollbar (nvim-scrollview) visible in all windows including Neo-tree. Draggable with mouse.
+
 ### Neo-tree Git Status Icons
 | Icon | Meaning |
 |---|---|
