@@ -18,7 +18,7 @@ local function build_choices(icon)
             seen_group = h.group
             table.insert(choices, { id = '', label = '── ' .. h.group .. ' ──' })
         end
-        -- Host entry: "󰣀 gitlab  (10.0.0.230 :2200)"
+        -- Host entry: "󰣀 gitlab  (10.0.0.XXX :2200)"
         local suffix = h.host
         if port ~= DEFAULT_PORT then
             suffix = suffix .. ' :' .. port
