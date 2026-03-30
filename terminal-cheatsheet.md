@@ -128,33 +128,34 @@
 
 Для добавления нового хоста нужно обновить **два файла**:
 
-1. **`~/.ssh/config`** — для системного ssh и WezTerm SSH-доменов:
+1. **`private/ssh/hosts.config`** — для системного ssh и WezTerm SSH-доменов:
 ```
 # === Группа ===
 Host myhost
-    HostName 10.0.1.50
-    User nikita.gasov
+    HostName 10.0.0.XXX
+    User your_username
 ```
 
-2. **`~/.config/wezterm/ssh-hosts.lua`** — для меню и авто-команд:
+2. **`private/wezterm/ssh-hosts.lua`** — для меню и авто-команд:
 ```lua
-{ name = 'myhost', group = 'Группа', host = '10.0.1.50' },
+{ name = 'myhost', group = 'Группа', host = '10.0.0.XXX' },
 -- с авто-командой:
-{ name = 'myhost', group = 'Группа', host = '10.0.1.50', cmd = 'sudo -iu deploy' },
+{ name = 'myhost', group = 'Группа', host = '10.0.0.XXX', cmd = 'sudo -iu deploy' },
 ```
 
 После изменений хост появится в меню `Ctrl+Shift+H`.
+
+> После редактирования private-файлов — закоммитить изменения в submodule, затем в основном репо.
 
 ## Структура конфигов
 
 ```
 ~/.config/wezterm/          — WezTerm (Lua, модульный)
-  ssh-hosts.lua             — список хостов (группы, авто-команды)
+  ssh-hosts.lua             — загрузчик хостов из private/
   ssh.lua                   — SSH-домены и меню подключений
   nvim-open.lua             — Ctrl+Click file:line → открытие в Neovim (cross-pane)
 ~/.config/fish/             — Fish shell
 ~/.config/starship.toml     — Starship prompt
 ~/.ssh/config               — SSH серверы (порты, ключи)
+private/                    — приватные данные (SSH хосты, env vars) — git submodule
 ```
-
-Бэкап старых конфигов: `~/config-backup-2026-02-27/`

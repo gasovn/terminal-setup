@@ -60,68 +60,26 @@ chsh -s /usr/bin/fish
 
 ## 3. Копирование конфигов
 
-Из каталога `configs/` этого бэкапа:
+`setup.sh` создаёт все симлинки автоматически:
+
+```bash
+git clone --recurse-submodules <repo-url>
+cd terminal-setup
+./setup.sh
+```
+
+Если приватный сабмодуль недоступен — SSH-хосты и deploy-окружение не подтянутся. Это ожидаемо.
 
 ### Themes (theme switcher)
 
+Тему нужно установить вручную — `setup.sh` это не делает:
+
 ```bash
-cp -r configs/themes/ ~/.config/themes/
 echo "gruvbox-material" > ~/.config/current-theme
-```
-
-### Fish
-
-```bash
-# Создать структуру
-mkdir -p ~/.config/fish/{conf.d,functions,completions}
-
-# Копировать
-cp configs/fish/config.fish ~/.config/fish/
-cp configs/fish/conf.d/*.fish ~/.config/fish/conf.d/
-cp configs/fish/functions/*.fish ~/.config/fish/functions/
-cp configs/fish/completions/*.fish ~/.config/fish/completions/
-```
-
-### Starship
-
-```bash
-cp configs/starship/starship.toml ~/.config/starship.toml
-```
-
-### WezTerm
-
-```bash
-mkdir -p ~/.config/wezterm
-cp configs/wezterm/*.lua ~/.config/wezterm/
-```
-
-### Neovim (полный конфиг IDE)
-
-```bash
-mkdir -p ~/.config/nvim/lua/{config,plugins}
-
-# Базовые файлы
-cp configs/nvim/init.lua ~/.config/nvim/
-cp configs/nvim/lazy-lock.json ~/.config/nvim/
-cp configs/nvim/cheatsheet.md ~/.config/nvim/
-
-# Конфиг (options, keymaps, autocmds)
-cp configs/nvim/lua/config/*.lua ~/.config/nvim/lua/config/
-
-# Все плагины (33 файла)
-cp configs/nvim/lua/plugins/*.lua ~/.config/nvim/lua/plugins/
 ```
 
 После первого запуска Neovim автоматически установит все плагины через lazy.nvim.
 Зависимости для LSP, линтеров и форматтеров устанавливаются через Mason (`:Mason`).
-
-### SSH
-
-```bash
-# ВАЖНО: не перезаписывай если уже есть свой config — смерджи вручную
-cp configs/ssh/config ~/.ssh/config
-chmod 700 ~/.ssh/config
-```
 
 ---
 
@@ -165,7 +123,8 @@ wezterm ls-fonts 2>&1 | head -1
 ├── keybinds.lua             — хоткеи (табы, сплиты, workspaces, SSH, copy mode, мышь)
 ├── kitty-cyrillic-fix.lua   — фикс Kitty protocol для русской раскладки (Shift/Ctrl + кириллица)
 ├── ssh.lua                  — SSH-домены (меню подключений, SFTP) из ssh-hosts.lua
-├── ssh-hosts.lua            — список хостов (группы, авто-команды для SSH-меню)
+├── ssh-hosts.lua            — загрузчик хостов из private/ (fallback на пустой список)
+├── ssh-hosts.example.lua    — шаблон для создания своего списка хостов
 ├── workspaces.lua           — workspace по умолчанию
 ├── statusbar.lua            — powerline статусбар (workspace, SSH host, dir, время)
 ├── hyperlinks.lua           — URL + file:line ссылки (nvim:// scheme) + шаблон для тикетов
@@ -191,7 +150,7 @@ wezterm ls-fonts 2>&1 | head -1
 │   ├── extract.fish      — универсальная распаковка архивов
 │   ├── backup.fish       — бэкап файла с таймстампом
 │   ├── theme.fish        — переключение темы: theme <name>, theme list
-│   └── (кастомные: ovpn, nts, cherry-pick, claude-team, _my_deploy*)
+│   └── (кастомные: nts, cherry-pick, claude-team, _my_deploy*)
 └── completions/
     └── pnpm.fish
 ```
@@ -255,25 +214,27 @@ theme catppuccin-mocha   # переключить на Catppuccin Mocha
 
 ## 10. SSH — добавление серверов
 
-Для добавления нового хоста нужно обновить **два файла**:
+Для добавления нового хоста нужно обновить **два файла** в приватном сабмодуле:
 
-### 1. `~/.ssh/config` — для системного ssh и WezTerm SSH-доменов
+### 1. `private/ssh/hosts.config` — для системного ssh и WezTerm SSH-доменов
 
 ```
 # === ГРУППА ===
 Host alias
-    HostName 10.0.0.100
-    User username
+    HostName 10.0.0.XXX
+    User your_username
     Port 22
 ```
 
-### 2. `~/.config/wezterm/ssh-hosts.lua` — для меню и авто-команд
+### 2. `private/wezterm/ssh-hosts.lua` — для меню и авто-команд
 
 ```lua
-{ name = 'alias', group = 'Группа', host = '10.0.0.100' },
+{ name = 'alias', group = 'Группа', host = '10.0.0.XXX' },
 -- с авто-командой:
-{ name = 'alias', group = 'Группа', host = '10.0.0.100', cmd = 'sudo -iu deploy' },
+{ name = 'alias', group = 'Группа', host = '10.0.0.XXX', cmd = 'sudo -iu deploy' },
 ```
+
+После редактирования — закоммитить и запушить оба репозитория: приватный сабмодуль и основной.
 
 После добавления:
 - `ssh alias` — подключение из терминала
