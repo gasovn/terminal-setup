@@ -1,0 +1,25 @@
+# SSH host definitions — copy to private/ssh/hosts.config and fill in your values.
+#
+# Example format:
+#
+# === GitLab ===
+# Host gitlab
+#     HostName 10.0.0.XXX
+#     User your_username
+#     Port 2112
+#
+# === Database Servers ===
+# Host db-master
+#     HostName 10.0.0.XXX
+#     User your_username
+#
+# === Application Servers ===
+# Host app-prod
+#     HostName 10.0.0.XXX
+#     User your_username
+#
+# === External ===
+# Host my-vps
+#     HostName 203.0.113.XXX
+#     User your_username
+#     Port 2200
