@@ -114,7 +114,7 @@
 | `v` | `nvim` |
 | `cls` | `clear` |
 | `cdc` | `cd ~/code` |
-| `cdl` | `cd ~/code/homelab` |
+| `cdl` | `cd ~/homelab` |
 
 ## Кастомные функции Fish
 

@@ -140,7 +140,7 @@ wezterm ls-fonts 2>&1 | head -1
 ~/.config/fish/
 ├── config.fish           — Starship, zoxide, fzf, pyenv
 ├── conf.d/
-│   ├── aliases.fish      — abbreviations (ls→eza, cat→bat, git, docker, cdc→~/code, cdl→~/code/homelab)
+│   ├── aliases.fish      — abbreviations (ls→eza, cat→bat, git, docker, cdc→~/code, cdl→~/homelab)
 │   ├── theme.fish        — цвета для подсветки синтаксиса (управляется theme switcher)
 │   ├── env.fish          — LANG, EDITOR, PAGER, Rust/Go/Node переменные
 │   ├── path.fish         — PATH (.local/bin, cargo, go, npm-global, opencode)
