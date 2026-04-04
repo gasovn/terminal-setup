@@ -98,6 +98,11 @@ fi
 
 mkdir -p ~/.config/nvim/lua
 
+# Remove existing directories so ln -sfn creates a symlink at the path
+# (ln -sfn into an existing directory creates a symlink *inside* it)
+[ -d ~/.config/nvim/lua/config ] && [ ! -L ~/.config/nvim/lua/config ] && rm -rf ~/.config/nvim/lua/config
+[ -d ~/.config/nvim/lua/plugins ] && [ ! -L ~/.config/nvim/lua/plugins ] && rm -rf ~/.config/nvim/lua/plugins
+
 ln -sfn "$SCRIPT_DIR/configs/nvim/lua/config" ~/.config/nvim/lua/config
 echo "  ~/.config/nvim/lua/config → configs/nvim/lua/config"
 
