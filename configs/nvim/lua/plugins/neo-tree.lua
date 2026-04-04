@@ -20,7 +20,7 @@ return {
         follow_current_file = { enabled = true },
         use_libuv_file_watcher = true,
         filtered_items = {
-          visible = false,
+          visible = true,
           hide_dotfiles = false,
           hide_gitignored = true,
           hide_by_name = { "node_modules", ".git", "__pycache__", ".DS_Store" },
