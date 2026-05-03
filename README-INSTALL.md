@@ -14,6 +14,10 @@ sudo dnf install -y wezterm fish starship fd-find bat zoxide fzf ripgrep
 
 # Neovim и зависимости
 sudo dnf install -y neovim gcc gcc-c++ clang make cmake nodejs npm python3 python3-pip go unzip curl wget wl-clipboard lazygit
+
+# Опциональные тулы для kulala.nvim (REST/HTTP клиент в nvim)
+# grpcurl — для gRPC-запросов; пропусти если gRPC не нужен
+sudo dnf install -y grpcurl
 ```
 
 ### Через Rust/Cargo (eza и yazi нет в dnf)
@@ -29,6 +33,9 @@ cargo install eza
 # Установить yazi (файл-менеджер)
 cargo install --force yazi-build
 yazi-build
+
+# Установить websocat (для kulala.nvim, WebSocket-запросы; пропусти если не нужно)
+cargo install websocat
 ```
 
 ### Шрифт: FiraCode Nerd Font
@@ -133,8 +140,8 @@ wezterm ls-fonts 2>&1 | head -1
 ├── conf.d/
 │   ├── aliases.fish      — abbreviations (ls→eza, cat→bat, git, docker, cdc→~/code, cdl→~/homelab)
 │   ├── theme.fish        — цвета для подсветки синтаксиса (управляется theme switcher)
-│   ├── env.fish          — LANG, EDITOR, PAGER, Rust/Go/Node переменные
-│   ├── path.fish         — PATH (.local/bin, cargo, go, npm-global, opencode)
+│   ├── env.fish          — LANG, EDITOR, PAGER, Rust/Go/Node переменные (включая N_PREFIX)
+│   ├── path.fish         — PATH (.local/bin, cargo, go, npm-global, n, opencode)
 │   └── wezterm.fish      — shell integration (уведомления, заголовки табов)
 ├── functions/
 │   ├── mkcd.fish         — mkdir + cd
@@ -154,16 +161,15 @@ wezterm ls-fonts 2>&1 | head -1
 ~/.config/nvim/
 ├── init.lua              — точка входа (lazy.nvim bootstrap + подключение модулей)
 ├── lazy-lock.json        — pinned-версии плагинов
-├── cheatsheet.md         — шпаргалка хоткеев
 └── lua/
     ├── config/
-    │   ├── options.lua   — базовые настройки, langmap (кириллица в Normal mode)
+    │   ├── options.lua   — базовые настройки, langmap (кириллица в Normal mode), отключение providers
     │   ├── keymaps.lua   — хоткеи (leader=Space)
-    │   └── autocmds.lua  — автокоманды (автосохранение, позиция курсора, WezTerm RPC сокет)
+    │   └── autocmds.lua  — автокоманды (автосохранение, курсор, WezTerm RPC, filetype detection)
     └── plugins/          — 33 файла: по одному на плагин/группу
         ├── colorscheme.lua   — Gruvbox Material (через theme switcher)
         ├── lualine.lua       — статусбар
-        ├── lsp.lua           — LSP (Mason + mason-lspconfig)
+        ├── lsp.lua           — LSP + Mason + mason-lspconfig + mason-tool-installer (форматтеры/линтеры/DAP)
         ├── cmp.lua           — автодополнение (nvim-cmp + LuaSnip)
         ├── treesitter.lua    — подсветка синтаксиса
         ├── telescope.lua     — fuzzy finder

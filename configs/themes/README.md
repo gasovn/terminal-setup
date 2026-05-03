@@ -42,4 +42,6 @@ Three files are replaced entirely:
 - `~/.config/nvim/lua/plugins/colorscheme.lua`
 - `~/.config/fish/conf.d/theme.fish`
 
+These three are symlinks back into the repo (created by `setup.sh`), so `cp` writes through into `configs/starship/starship.toml`, `configs/nvim/lua/plugins/colorscheme.lua`, and `configs/fish/conf.d/theme.fish` — switching theme will show up as a working-tree change in the repo. This is intentional: the repo's "default" copy of these files always reflects the active theme.
+
 Current theme name is stored in `~/.config/current-theme`.
