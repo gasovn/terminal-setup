@@ -30,7 +30,7 @@ configs/
 ├── ssh/          — SSH base config
 └── themes/       — Theme definitions (gruvbox-material, catppuccin-mocha)
 private/          — Git submodule: personal data (SSH hosts, env vars)
-setup.sh          — Bootstrap: creates symlinks for all configs
+setup.sh          — Bootstrap: symlinks configs, installs Neovim and FiraCode
 ```
 
 ---
@@ -43,7 +43,7 @@ cd terminal-setup
 ./setup.sh
 ```
 
-`setup.sh` creates symlinks from `~/.config/` to this repo and installs FiraCode Nerd Font if missing. System packages (wezterm, fish, neovim, etc.) are installed separately — see [README-INSTALL.md](README-INSTALL.md).
+`setup.sh` creates symlinks from `~/.config/` to this repo, installs Neovim 0.12.2 (prebuilt, into `~/.local/`) and FiraCode Nerd Font if missing. System packages (wezterm, fish, starship, etc.) need to be installed separately — see [README-INSTALL.md](README-INSTALL.md).
 
 ---
 
@@ -82,7 +82,7 @@ Fish functions and Neovim are configured for bilingual input:
 - Fedora Linux (tested on Fedora 41+)
 - KDE Plasma
 
-FiraCode Nerd Font is installed automatically by `setup.sh` if missing.
+Neovim and FiraCode Nerd Font are installed automatically by `setup.sh` (Neovim from upstream prebuilt; system Neovim is left untouched).
 
 ---
 

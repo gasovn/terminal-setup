@@ -72,12 +72,15 @@ cd terminal-setup
 
 `setup.sh` создаёт `~/.config/current-theme` с дефолтом `gruvbox-material` при первой установке. Существующий выбор (если файл уже есть) не перезаписывается.
 
+### Neovim
+
 `setup.sh` ставит prebuilt Neovim (`NVIM_VERSION` в шапке скрипта) в `~/.local/nvim/` и симлинк `~/.local/bin/nvim` — он перекрывает Fedora-шный в PATH. nvim-treesitter master требует ≥ 0.12, а Fedora пока даёт 0.11.x. Обновление: bumpнуть `NVIM_VERSION` в setup.sh и перезапустить.
 
 После первого запуска Neovim автоматически установит все плагины через lazy.nvim. На первом открытии любого файла:
 - `mason-lspconfig.nvim` поставит LSP-серверы (gopls, basedpyright, rust_analyzer, eslint и др.).
 - `mason-tool-installer.nvim` поставит форматтеры и линтеры (prettier, goimports, black, isort, stylua, ruff, golangci-lint, codelldb).
 - `nvim-treesitter` подтянет парсеры синтаксиса.
+- `gopher.nvim` через `:GoInstallDepsSync` поставит Go-тулы (gomodifytags, impl, iferr, gotests, json2go) в `~/go/bin/`.
 
 Прогресс смотри в `:Mason` и `:Lazy`.
 
@@ -95,6 +98,9 @@ fish -c 'starship prompt 2>&1'
 # Все утилиты доступны
 fish -c 'which eza bat fd zoxide fzf yazi'
 
+# Neovim — должен быть наш prebuilt из ~/.local/, не Fedora-шный
+fish -c 'command -v nvim; nvim --version | head -1'
+
 # WezTerm загружает конфиг
 wezterm ls-fonts 2>&1 | head -1
 ```
@@ -106,6 +112,7 @@ wezterm ls-fonts 2>&1 | head -1
 | Компонент | Расположение конфига |
 |-----------|---------------------|
 | Themes | `~/.config/themes/` (каталоги тем) + `~/.config/current-theme` |
+| Neovim binary | `~/.local/nvim/` (prebuilt) + симлинк `~/.local/bin/nvim` |
 | WezTerm | `~/.config/wezterm/` (10 lua-файлов) |
 | Fish | `~/.config/fish/` (config.fish + conf.d/ + functions/ + completions/) |
 | Starship | `~/.config/starship.toml` |
