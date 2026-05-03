@@ -80,13 +80,14 @@ return {
       })
 
       -- Mason-lspconfig: ensure servers installed
+      -- For C#: install on demand with :MasonInstall omnisharp + dotnet SDK
+      -- (omnisharp shells out to `dotnet` and won't start without it).
       require("mason-lspconfig").setup({
         ensure_installed = {
           "eslint",
           "gopls",
           "basedpyright",
           "rust_analyzer",
-          "omnisharp",
           "lua_ls",
           "jsonls",
           "yamlls",
@@ -146,8 +147,6 @@ return {
         },
       })
 
-      vim.lsp.config("omnisharp", { capabilities = capabilities })
-
       vim.lsp.config("lua_ls", {
         capabilities = capabilities,
         settings = {
@@ -177,7 +176,7 @@ return {
       -- Enable all configured servers
       vim.lsp.enable({
         "eslint", "gopls", "basedpyright", "rust_analyzer",
-        "omnisharp", "lua_ls", "jsonls", "yamlls", "html", "cssls",
+        "lua_ls", "jsonls", "yamlls", "html", "cssls",
         "dockerls", "bashls",
       })
 

@@ -1,7 +1,23 @@
 return {
+  -- Unified icon provider used by which-key, pickers, and other UI plugins.
+  -- Falls back to nvim-web-devicons when missing, but mini.icons gives
+  -- consistent rendering across all consumers.
+  {
+    "echasnovski/mini.icons",
+    lazy = true,
+    opts = {},
+    init = function()
+      package.preload["nvim-web-devicons"] = function()
+        require("mini.icons").mock_nvim_web_devicons()
+        return package.loaded["nvim-web-devicons"]
+      end
+    end,
+  },
+
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
+    dependencies = { "echasnovski/mini.icons" },
     opts = {
       spec = {
         { "<leader>b", group = "Buffers" },

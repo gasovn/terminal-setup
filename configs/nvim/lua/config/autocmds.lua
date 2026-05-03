@@ -1,6 +1,27 @@
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
+-- Filetypes the LSP configs target but Neovim doesn't detect natively.
+-- Without these, gopls/yamlls log "Unknown filetype" warnings and won't
+-- attach to go.work files, Helm charts, docker-compose, gitlab CI, etc.
+vim.filetype.add({
+  filename = {
+    ["go.work"] = "gowork",
+    ["go.work.sum"] = "gowork",
+    [".gitlab-ci.yml"] = "yaml.gitlab",
+    [".gitlab-ci.yaml"] = "yaml.gitlab",
+  },
+  pattern = {
+    [".*/templates/.*%.ya?ml"] = "helm",  -- Helm chart templates (separate filetype)
+    ["values.*%.ya?ml"] = "yaml.helm-values",
+    [".*/Chart%.ya?ml"] = "yaml.helm-values",
+    ["docker%-compose.*%.ya?ml"] = "yaml.docker-compose",
+    ["compose.*%.ya?ml"] = "yaml.docker-compose",
+    [".*%.gotmpl"] = "gotmpl",
+    [".*%.tmpl"] = "gotmpl",
+  },
+})
+
 -- Restore cursor position on file open
 autocmd("BufReadPost", {
   group = augroup("RestoreCursor", { clear = true }),

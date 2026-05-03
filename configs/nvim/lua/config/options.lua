@@ -79,3 +79,10 @@ vim.opt.langremap = false
 -- Disable netrw (neo-tree will replace it)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
+-- Disable language providers we don't use (silences :checkhealth warnings).
+-- No plugins here need RPC into perl/ruby/node/python runtimes.
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_python3_provider = 0
