@@ -16,3 +16,6 @@ set -gx GOPATH $HOME/go
 
 # Node.js — npm global without sudo
 set -gx NPM_CONFIG_PREFIX $HOME/.npm-global
+
+# n (Node version manager) — without sudo
+set -gx N_PREFIX $HOME/n
