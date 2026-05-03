@@ -6,9 +6,10 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
     },
-    build = function()
-      vim.cmd([[silent! GoInstallDeps]])
-    end,
+    -- Sync variant blocks until `go install` finishes for all 5 deps
+    -- (gomodifytags, impl, iferr, gotests, json2go). Async :GoInstallDeps
+    -- returns immediately, leaving tools missing on first launch.
+    build = ":GoInstallDepsSync",
     opts = {},
     keys = {
       { "<leader>cgt", "<cmd>GoTagAdd json<CR>", desc = "Add json tags", ft = "go" },
