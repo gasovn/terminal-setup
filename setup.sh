@@ -6,6 +6,12 @@
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+# Pinned Neovim release: nvim-treesitter master requires >= 0.12 and
+# Fedora ships 0.11.6, so we install the official prebuilt into ~/.local/
+# and a symlink in ~/.local/bin/nvim wins over /usr/bin/nvim in PATH.
+# Bump this when upstream cuts a new release we want.
+NVIM_VERSION="v0.12.2"
+
 # ── Warning ──────────────────────────────────────────────────────────
 
 cat <<'EOF'
@@ -139,6 +145,34 @@ fi
 
 ln -sfn "$SCRIPT_DIR/configs/starship/starship.toml" ~/.config/starship.toml
 echo "  ~/.config/starship.toml → configs/starship/starship.toml"
+
+# ── Neovim (prebuilt tarball) ────────────────────────────────────────
+# Install from upstream release rather than dnf to keep up with plugin
+# requirements (lazy.nvim, nvim-treesitter, etc. drop old nvim quickly).
+
+nvim_dir="$HOME/.local/nvim"
+nvim_bin="$HOME/.local/bin/nvim"
+current_nvim=""
+[ -x "$nvim_bin" ] && current_nvim=$("$nvim_bin" --version 2>/dev/null | awk 'NR==1{print $2}')
+
+if [ "$current_nvim" = "$NVIM_VERSION" ]; then
+    echo "  Neovim $NVIM_VERSION — already installed"
+else
+    echo "  Neovim $NVIM_VERSION — installing…"
+    tmp=$(mktemp -d)
+    url="https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.tar.gz"
+    if curl -fsSL -o "$tmp/nvim.tar.gz" "$url" \
+       && rm -rf "$nvim_dir" \
+       && mkdir -p "$nvim_dir" \
+       && tar -xzf "$tmp/nvim.tar.gz" -C "$nvim_dir" --strip-components=1 \
+       && mkdir -p "$HOME/.local/bin" \
+       && ln -sfn "$nvim_dir/bin/nvim" "$nvim_bin"; then
+        echo "  $nvim_bin → $nvim_dir/bin/nvim"
+    else
+        echo "  Neovim install failed (network or release missing)" >&2
+    fi
+    rm -rf "$tmp"
+fi
 
 # ── Fonts: FiraCode Nerd Font ────────────────────────────────────────
 # WezTerm requires this font; install if missing.

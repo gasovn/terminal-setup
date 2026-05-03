@@ -12,8 +12,8 @@
 # Терминальная среда
 sudo dnf install -y wezterm fish starship fd-find bat zoxide fzf ripgrep
 
-# Neovim и зависимости
-sudo dnf install -y neovim gcc gcc-c++ clang make cmake nodejs npm python3 python3-pip go unzip curl wget wl-clipboard lazygit
+# Сборочные тулы и рантаймы (nvim сам ставится через setup.sh — см. п. 3)
+sudo dnf install -y gcc gcc-c++ clang make cmake nodejs npm python3 python3-pip go unzip curl wget wl-clipboard lazygit
 
 # Опциональные тулы для kulala.nvim (REST/HTTP клиент в nvim)
 # grpcurl — для gRPC-запросов; пропусти если gRPC не нужен
@@ -71,6 +71,8 @@ cd terminal-setup
 ### Themes (theme switcher)
 
 `setup.sh` создаёт `~/.config/current-theme` с дефолтом `gruvbox-material` при первой установке. Существующий выбор (если файл уже есть) не перезаписывается.
+
+`setup.sh` ставит prebuilt Neovim (`NVIM_VERSION` в шапке скрипта) в `~/.local/nvim/` и симлинк `~/.local/bin/nvim` — он перекрывает Fedora-шный в PATH. nvim-treesitter master требует ≥ 0.12, а Fedora пока даёт 0.11.x. Обновление: bumpнуть `NVIM_VERSION` в setup.sh и перезапустить.
 
 После первого запуска Neovim автоматически установит все плагины через lazy.nvim. На первом открытии любого файла:
 - `mason-lspconfig.nvim` поставит LSP-серверы (gopls, basedpyright, rust_analyzer, eslint и др.).
