@@ -18,6 +18,8 @@ require("lazy").setup("plugins", {
   install = { colorscheme = { "gruvbox-material", "habamax" } },
   checker = { enabled = true, notify = false },
   change_detection = { notify = false },
+  -- No plugins use luarocks; skip hererocks bootstrap to silence health warnings.
+  rocks = { enabled = false },
   performance = {
     rtp = {
       disabled_plugins = {

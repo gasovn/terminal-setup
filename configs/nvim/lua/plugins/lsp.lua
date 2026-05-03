@@ -9,6 +9,28 @@ return {
     },
   },
 
+  -- Auto-install Mason packages that mason-lspconfig doesn't cover
+  -- (formatters, linters, DAP adapters).
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = { "williamboman/mason.nvim" },
+    opts = {
+      ensure_installed = {
+        "prettier",       -- conform: js/ts/json/yaml/html/css/md
+        "goimports",      -- conform: go
+        "black",          -- conform: python
+        "isort",          -- conform: python imports
+        "stylua",         -- conform: lua
+        "ruff",           -- nvim-lint: python
+        "golangci-lint",  -- nvim-lint: go
+        "codelldb",       -- DAP: rust
+      },
+      auto_update = false,
+      run_on_start = true,
+    },
+  },
+
   -- Bridge between Mason and lspconfig
   {
     "williamboman/mason-lspconfig.nvim",
