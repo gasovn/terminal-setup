@@ -43,8 +43,7 @@ cd terminal-setup
 ./setup.sh
 ```
 
-`setup.sh` creates symlinks from `~/.config/` to this repo. It does not install packages.
-For full dependency installation see [README-INSTALL.md](README-INSTALL.md).
+`setup.sh` creates symlinks from `~/.config/` to this repo and installs FiraCode Nerd Font if missing. System packages (wezterm, fish, neovim, etc.) are installed separately — see [README-INSTALL.md](README-INSTALL.md).
 
 ---
 
@@ -82,7 +81,8 @@ Fish functions and Neovim are configured for bilingual input:
 
 - Fedora Linux (tested on Fedora 41+)
 - KDE Plasma
-- FiraCode Nerd Font
+
+FiraCode Nerd Font is installed automatically by `setup.sh` if missing.
 
 ---
 
