@@ -8,6 +8,15 @@ return {
       "neovim/nvim-lspconfig",
     },
     opts = {
+      -- Override default filetypes to drop the legacy `javascript.jsx` and
+      -- `typescript.tsx` compound names that nvim 0.12 reports as unknown.
+      -- The standard filetypes (javascriptreact / typescriptreact) cover JSX/TSX.
+      filetypes = {
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+      },
       settings = {
         tsserver_file_preferences = {
           includeInlayParameterNameHints = "all",

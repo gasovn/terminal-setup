@@ -21,7 +21,6 @@ return {
         go = { "gofmt", "goimports" },
         python = { "black", "isort" },
         rust = { "rustfmt" },
-        cs = { "csharpier" },
         lua = { "stylua" },
       },
       format_on_save = function(bufnr)
