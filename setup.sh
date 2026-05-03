@@ -21,7 +21,11 @@ cat <<'EOF'
 ║    ~/.config/fish/conf.d/    (repo-managed files)               ║
 ║    ~/.config/fish/functions/  (repo-managed files)               ║
 ║    ~/.config/fish/completions/ (repo-managed files)              ║
-║    ~/.config/nvim/lua/       (config + plugins)                 ║
+║    ~/.config/nvim/init.lua                                       ║
+║    ~/.config/nvim/lazy-lock.json                                 ║
+║    ~/.config/nvim/lua/       (config + plugins)                  ║
+║    ~/.config/themes/         (entire directory)                  ║
+║    ~/.config/starship.toml                                       ║
 ║                                                                  ║
 ║  If you have local changes in these locations, back them up      ║
 ║  BEFORE proceeding.                                              ║
@@ -103,6 +107,12 @@ mkdir -p ~/.config/nvim/lua
 [ -d ~/.config/nvim/lua/config ] && [ ! -L ~/.config/nvim/lua/config ] && rm -rf ~/.config/nvim/lua/config
 [ -d ~/.config/nvim/lua/plugins ] && [ ! -L ~/.config/nvim/lua/plugins ] && rm -rf ~/.config/nvim/lua/plugins
 
+ln -sfn "$SCRIPT_DIR/configs/nvim/init.lua" ~/.config/nvim/init.lua
+echo "  ~/.config/nvim/init.lua → configs/nvim/init.lua"
+
+ln -sfn "$SCRIPT_DIR/configs/nvim/lazy-lock.json" ~/.config/nvim/lazy-lock.json
+echo "  ~/.config/nvim/lazy-lock.json → configs/nvim/lazy-lock.json"
+
 ln -sfn "$SCRIPT_DIR/configs/nvim/lua/config" ~/.config/nvim/lua/config
 echo "  ~/.config/nvim/lua/config → configs/nvim/lua/config"
 
@@ -110,11 +120,47 @@ ln -sfn "$SCRIPT_DIR/configs/nvim/lua/plugins" ~/.config/nvim/lua/plugins
 echo "  ~/.config/nvim/lua/plugins → configs/nvim/lua/plugins"
 
 # ── Themes ───────────────────────────────────────────────────────────
-# Themes are referenced by other configs via relative paths from the repo.
-# No system symlink needed — just confirm they exist.
+# theme.fish reads themes from ~/.config/themes/<name>/.
 
-if [ -d "$SCRIPT_DIR/configs/themes" ]; then
-    echo "  configs/themes/ — available (used by wezterm, fish, nvim, starship)"
+mkdir -p ~/.config
+
+ln -sfn "$SCRIPT_DIR/configs/themes" ~/.config/themes
+echo "  ~/.config/themes → configs/themes"
+
+# Default theme on first install. Existing user choice is preserved.
+if [ ! -f ~/.config/current-theme ]; then
+    echo "gruvbox-material" > ~/.config/current-theme
+    echo "  ~/.config/current-theme → gruvbox-material (default)"
+fi
+
+# ── Starship ─────────────────────────────────────────────────────────
+# Note: `theme <name>` overwrites this file with the theme's
+# starship-palette.toml — through the symlink, into the repo.
+
+ln -sfn "$SCRIPT_DIR/configs/starship/starship.toml" ~/.config/starship.toml
+echo "  ~/.config/starship.toml → configs/starship/starship.toml"
+
+# ── Fonts: FiraCode Nerd Font ────────────────────────────────────────
+# WezTerm requires this font; install if missing.
+
+# grep -q closes the pipe early -> fc-list gets SIGPIPE; with `pipefail`
+# this would falsely look like "not found", so check via match count instead.
+if [ "$(fc-list 2>/dev/null | grep -ci "FiraCode Nerd")" -gt 0 ]; then
+    echo "  FiraCode Nerd Font — already installed"
+else
+    echo "  FiraCode Nerd Font — installing…"
+    fonts_dir=~/.local/share/fonts
+    mkdir -p "$fonts_dir"
+    tmp=$(mktemp -d)
+    if curl -fsSL -o "$tmp/FiraCode.zip" https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip \
+       && unzip -q "$tmp/FiraCode.zip" -d "$tmp/FiraCode" \
+       && cp "$tmp"/FiraCode/*.ttf "$fonts_dir/" \
+       && fc-cache -f >/dev/null; then
+        echo "  FiraCode Nerd Font → $fonts_dir/"
+    else
+        echo "  FiraCode Nerd Font — install failed (check network); set font manually" >&2
+    fi
+    rm -rf "$tmp"
 fi
 
 echo ""

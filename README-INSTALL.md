@@ -13,7 +13,7 @@
 sudo dnf install -y wezterm fish starship fd-find bat zoxide fzf ripgrep
 
 # Neovim и зависимости
-sudo dnf install -y neovim gcc gcc-c++ make cmake nodejs npm python3 python3-pip go unzip curl wget wl-clipboard lazygit
+sudo dnf install -y neovim gcc gcc-c++ clang make cmake nodejs npm python3 python3-pip go unzip curl wget wl-clipboard lazygit
 ```
 
 ### Через Rust/Cargo (eza и yazi нет в dnf)
@@ -33,16 +33,7 @@ yazi-build
 
 ### Шрифт: FiraCode Nerd Font
 
-Если не установлен:
-
-```bash
-mkdir -p ~/.local/share/fonts
-cd /tmp
-wget https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip
-unzip FiraCode.zip -d FiraCode
-cp FiraCode/*.ttf ~/.local/share/fonts/
-fc-cache -fv
-```
+`setup.sh` устанавливает шрифт автоматически в `~/.local/share/fonts/`, если его ещё нет в системе. Существующая установка не трогается.
 
 Проверка: `fc-list | grep -i "FiraCode Nerd"`
 
@@ -72,14 +63,14 @@ cd terminal-setup
 
 ### Themes (theme switcher)
 
-Тему нужно установить вручную — `setup.sh` это не делает:
+`setup.sh` создаёт `~/.config/current-theme` с дефолтом `gruvbox-material` при первой установке. Существующий выбор (если файл уже есть) не перезаписывается.
 
-```bash
-echo "gruvbox-material" > ~/.config/current-theme
-```
+После первого запуска Neovim автоматически установит все плагины через lazy.nvim. На первом открытии любого файла:
+- `mason-lspconfig.nvim` поставит LSP-серверы (gopls, basedpyright, rust_analyzer, eslint и др.).
+- `mason-tool-installer.nvim` поставит форматтеры и линтеры (prettier, goimports, black, isort, stylua, ruff, golangci-lint, codelldb).
+- `nvim-treesitter` подтянет парсеры синтаксиса.
 
-После первого запуска Neovim автоматически установит все плагины через lazy.nvim.
-Зависимости для LSP, линтеров и форматтеров устанавливаются через Mason (`:Mason`).
+Прогресс смотри в `:Mason` и `:Lazy`.
 
 ---
 
