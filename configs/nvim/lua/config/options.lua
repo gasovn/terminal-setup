@@ -39,6 +39,9 @@ vim.opt.undodir = vim.fn.stdpath("state") .. "/undo"
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
+-- Sessions (auto-session): include localoptions so filetype/highlights restore.
+vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 -- Misc
 vim.opt.wrap = false
 vim.opt.updatetime = 250
