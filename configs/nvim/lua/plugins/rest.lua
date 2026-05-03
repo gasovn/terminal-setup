@@ -10,6 +10,16 @@ return {
       { "[r", function() require("kulala").jump_prev() end, desc = "Prev Request", ft = "http" },
       { "]r", function() require("kulala").jump_next() end, desc = "Next Request", ft = "http" },
     },
-    opts = {},
+    opts = {
+      -- Lua response-body formatter. kulala's default runs vim.fn.executable
+      -- at module-load time, before Mason has added its bin to PATH, so it
+      -- silently disables the formatter. Force the command instead.
+      contenttypes = {
+        ["application/lua"] = {
+          ft = "lua",
+          formatter = { "stylua", "-" },
+        },
+      },
+    },
   },
 }

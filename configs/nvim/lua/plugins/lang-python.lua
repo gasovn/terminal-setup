@@ -2,7 +2,6 @@ return {
   -- Auto-detect virtualenv
   {
     "linux-cultist/venv-selector.nvim",
-    branch = "regexp",
     ft = "python",
     dependencies = {
       "neovim/nvim-lspconfig",
