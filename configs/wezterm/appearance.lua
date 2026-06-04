@@ -161,34 +161,43 @@ function M.apply(config)
         local title
         local dir
 
-        -- SSH domain: show hostname from domain name (e.g. "SSH:stage" → "stage")
-        local domain = pane.domain_name or ''
-        local ssh_host_name = domain:match('^SSH:(.+)')
-        if ssh_host_name then
-            icon = '󰣀'
-            title = ssh_host_name
-        elseif shells[process] then
-            local cwd = pane.current_working_dir
-            if cwd then
-                dir = cwd.file_path or tostring(cwd)
-                title = process .. ' ' .. utils.shorten_path(dir)
-            else
-                title = process
-            end
-        elseif process == 'ssh' then
-            local host = utils.ssh_host(pane)
-            title = host and ('ssh ' .. host) or 'ssh'
-        else
+        local manual = tab.tab_title
+        if manual and manual ~= '' then
+            -- Manual name set via Ctrl+Shift+R — pencil icon, keep git dirty dot
+            icon = '󰏫'
+            title = manual
             local cwd = pane.current_working_dir
             if cwd then dir = cwd.file_path or tostring(cwd) end
-            -- Show "process dirname" so tabs like claude/nvim indicate which repo
-            if dir then
-                local dirname = dir:match('([^/]+)/?$') or dir
-                title = process .. ' ' .. dirname
-            else
-                title = pane.title
-                if title == '' or title == process then
+        else
+            -- SSH domain: show hostname from domain name (e.g. "SSH:stage" → "stage")
+            local domain = pane.domain_name or ''
+            local ssh_host_name = domain:match('^SSH:(.+)')
+            if ssh_host_name then
+                icon = '󰣀'
+                title = ssh_host_name
+            elseif shells[process] then
+                local cwd = pane.current_working_dir
+                if cwd then
+                    dir = cwd.file_path or tostring(cwd)
+                    title = process .. ' ' .. utils.shorten_path(dir)
+                else
                     title = process
+                end
+            elseif process == 'ssh' then
+                local host = utils.ssh_host(pane)
+                title = host and ('ssh ' .. host) or 'ssh'
+            else
+                local cwd = pane.current_working_dir
+                if cwd then dir = cwd.file_path or tostring(cwd) end
+                -- Show "process dirname" so tabs like claude/nvim indicate which repo
+                if dir then
+                    local dirname = dir:match('([^/]+)/?$') or dir
+                    title = process .. ' ' .. dirname
+                else
+                    title = pane.title
+                    if title == '' or title == process then
+                        title = process
+                    end
                 end
             end
         end

@@ -40,6 +40,23 @@ function M.apply(config)
         -- Move tab left/right
         { key = '<', mods = 'CTRL|SHIFT', action = act.MoveTabRelative(-1) },
         { key = '>', mods = 'CTRL|SHIFT', action = act.MoveTabRelative(1) },
+        -- Rename current tab; empty input clears the manual name back to auto
+        {
+            key = 'r',
+            mods = 'CTRL|SHIFT',
+            action = act.PromptInputLine {
+                description = wezterm.format {
+                    { Attribute = { Intensity = 'Bold' } },
+                    { Foreground = { Color = '#cba6f7' } },
+                    { Text = '  Enter tab name: ' },
+                },
+                action = wezterm.action_callback(function(window, _pane, line)
+                    if line ~= nil then
+                        window:active_tab():set_title(line)
+                    end
+                end),
+            },
+        },
 
         -- ═══ Splits (panes) ═══
         -- Vertical split (pane to the right)
