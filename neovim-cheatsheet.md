@@ -191,6 +191,7 @@ Directories show the highest-priority icon from their children. File names are c
 | `<leader>Da` | Add DB Connection |
 | `<leader>sn` | Notification history |
 | `]]` / `[[` | Next/Prev reference (illuminate) |
+| `Alt+wheel` | Scroll horizontally (left/right) |
 
 ## Language-Specific
 

@@ -23,8 +23,8 @@ vim.opt.incsearch = true
 vim.opt.cursorline = true
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
-vim.opt.scrolloff = 8
-vim.opt.sidescrolloff = 8
+vim.opt.scrolloff = 0
+vim.opt.sidescrolloff = 0
 
 -- Clipboard (Wayland via wl-clipboard)
 vim.opt.clipboard = "unnamedplus"
