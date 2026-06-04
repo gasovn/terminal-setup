@@ -41,6 +41,10 @@ map("n", "<C-u>", "<C-u>zz", { desc = "Scroll up centered" })
 map("n", "n", "nzzzv", { desc = "Next search centered" })
 map("n", "N", "Nzzzv", { desc = "Prev search centered" })
 
+-- Horizontal scroll with Alt + mouse wheel
+map({ "n", "v", "i" }, "<M-ScrollWheelDown>", "3zl", { desc = "Scroll right" })
+map({ "n", "v", "i" }, "<M-ScrollWheelUp>", "3zh", { desc = "Scroll left" })
+
 -- Paste without yanking replaced text
 map("x", "<leader>p", [["_dP]], { desc = "Paste without yank" })
 
