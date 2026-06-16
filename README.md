@@ -10,7 +10,7 @@ WezTerm + Fish + Starship + Neovim (LazyVim) with a one-command theme switcher.
 
 | Tool | Details |
 |------|---------|
-| **WezTerm** | Lua-based config with SSH connect menu, SFTP, workspaces, Ctrl+Click file:line → nvim |
+| **WezTerm** | Lua-based config with SSH connect menu, SFTP, workspaces, directory picker → nvim, Ctrl+Click file:line → nvim |
 | **Fish shell** | Aliases and functions built on eza, bat, ripgrep, fd, zoxide, fzf, yazi |
 | **Neovim** | LazyVim-based IDE: LSP, DAP, neotest, treesitter, telescope, git — Go, TS, Python, Rust |
 | **Starship** | Minimal prompt with git and language context |
@@ -52,8 +52,8 @@ cd terminal-setup
 SSH host IPs, usernames, and personal environment variables live in the `private/` git submodule,
 which is a separate private repository and not cloned publicly.
 
-Without it everything works — the SSH host menu in WezTerm will be empty.
-Template files (`hosts.example`, `ssh-hosts.example.lua`) in the public configs show the expected format.
+Without it everything works — the SSH host menu in WezTerm will be empty, and the Ctrl+Shift+E directory picker will list nothing.
+Template files (`hosts.example`, `ssh-hosts.example.lua`, `scan-dirs.example.lua`) in the public configs show the expected format.
 
 ---
 
