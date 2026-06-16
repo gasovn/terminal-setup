@@ -113,7 +113,7 @@ wezterm ls-fonts 2>&1 | head -1
 |-----------|---------------------|
 | Themes | `~/.config/themes/` (каталоги тем) + `~/.config/current-theme` |
 | Neovim binary | `~/.local/nvim/` (prebuilt) + симлинк `~/.local/bin/nvim` |
-| WezTerm | `~/.config/wezterm/` (10 lua-файлов) |
+| WezTerm | `~/.config/wezterm/` (14 lua-файлов + picker-скрипт) |
 | Fish | `~/.config/fish/` (config.fish + conf.d/ + functions/ + completions/) |
 | Starship | `~/.config/starship.toml` |
 | Neovim | `~/.config/nvim/` (init.lua + lua/config/ + lua/plugins/ — 33 файла) |
@@ -127,17 +127,22 @@ wezterm ls-fonts 2>&1 | head -1
 ~/.config/wezterm/
 ├── wezterm.lua              — точка входа, подключает все модули
 ├── appearance.lua           — тема, шрифт (FiraCode 13), табы (процесс + директория, git dirty ●), GPU
-├── keybinds.lua             — хоткеи (табы, сплиты, workspaces, SSH, copy mode, мышь)
+├── keybinds.lua             — хоткеи (табы, сплиты, workspaces, SSH, обзор каталогов, copy mode, мышь)
 ├── kitty-cyrillic-fix.lua   — фикс Kitty protocol для русской раскладки (Shift/Ctrl + кириллица)
 ├── ssh.lua                  — SSH-домены (меню подключений, SFTP) из ssh-hosts.lua
 ├── ssh-hosts.lua            — загрузчик хостов из private/ (fallback на пустой список)
 ├── ssh-hosts.example.lua    — шаблон для создания своего списка хостов
+├── scan-dirs.lua            — загрузчик списка каталогов для Ctrl+Shift+E из private/ (fallback на пустой список)
+├── scan-dirs.example.lua    — шаблон для списка каталогов проектов
+├── open-dir-in-nvim.sh      — fzf-пикер каталогов (Ctrl+Shift+E) → nvim в новом табе
 ├── workspaces.lua           — workspace по умолчанию
 ├── statusbar.lua            — powerline статусбар (workspace, SSH host, dir, время)
 ├── hyperlinks.lua           — URL + file:line ссылки (nvim:// scheme) + шаблон для тикетов
 ├── nvim-open.lua            — Ctrl+Click file:line → открытие в Neovim через RPC (cross-pane)
 └── utils.lua                — иконки процессов, нормализация имён, git dirty
 ```
+
+> `scan-dirs.lua` загружает список базовых каталогов для пикера `Ctrl+Shift+E` из `private/wezterm/scan-dirs.lua` (абсолютные пути, формат — в `scan-dirs.example.lua`). Без приватного файла пикер пуст.
 
 ---
 
@@ -270,6 +275,7 @@ Host alias
 | `Ctrl+Shift+N` | Новый workspace |
 | `Ctrl+Shift+H` | SSH меню |
 | `Ctrl+Shift+F` | SFTP в Dolphin |
+| `Ctrl+Shift+E` | Пикер каталогов проектов (fzf) → nvim в новом табе |
 | `Ctrl+Shift+X` | Copy mode (vim) |
 | `Ctrl+Shift+Space` | Quick select |
 | `Ctrl+Shift+P` | Command palette |
