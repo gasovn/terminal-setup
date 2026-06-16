@@ -10,7 +10,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # Fedora ships 0.11.6, so we install the official prebuilt into ~/.local/
 # and a symlink in ~/.local/bin/nvim wins over /usr/bin/nvim in PATH.
 # Bump this when upstream cuts a new release we want.
-NVIM_VERSION="v0.12.2"
+NVIM_VERSION="v0.12.3"
 
 # ── Warning ──────────────────────────────────────────────────────────
 
