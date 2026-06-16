@@ -205,11 +205,13 @@ function M.apply(config)
         -- Git dirty indicator
         local dirty = utils.git_dirty(dir)
 
-        -- Truncate if too long
-        local suffix = dirty and ' ●' or ''
-        local max = max_width - 6 - #suffix
-        if #title > max then
-            title = title:sub(1, max) .. '…'
+        -- Truncate to fit, measured in display columns (#/sub count bytes and
+        -- mis-budget the multibyte ● and icon). Reserve prefix + trailing dot.
+        local prefix = ' ' .. idx .. ': ' .. icon .. ' '
+        local trailing = dirty and ' ● ' or ' '
+        local budget = max_width - wezterm.column_width(prefix) - wezterm.column_width(trailing)
+        if wezterm.column_width(title) > budget then
+            title = wezterm.truncate_right(title, math.max(budget - 1, 1)) .. '…'
         end
 
         if dirty then
