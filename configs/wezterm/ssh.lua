@@ -61,14 +61,18 @@ function M.connect_action()
                     if not h then return end
                     -- Use SSH: domain — no WezTerm needed on remote host
                     local domain_name = 'SSH:' .. id
-                    local _tab, new_pane, _mux_win =
-                        w:mux_window():spawn_tab { domain = { DomainName = domain_name } }
-                    -- Send auto-command after SSH connection establishes
-                    if h.cmd and new_pane then
-                        wezterm.time.call_after(2, function()
-                            new_pane:send_text(h.cmd .. '\n')
-                        end)
+                    -- Run the host's auto-command as the session program. On an
+                    -- SSH: domain (multiplexing None) args execute on the remote,
+                    -- so this avoids the timing race of typing into the pane
+                    -- before the remote shell is ready. After the cmd returns we
+                    -- exec the connecting user's login shell, so exiting the cmd
+                    -- (e.g. `sudo -iu deploy`) drops back into your own account
+                    -- instead of closing the tab.
+                    local spawn = { domain = { DomainName = domain_name } }
+                    if h.cmd then
+                        spawn.args = { 'sh', '-c', h.cmd .. '; exec "$SHELL" -l' }
                     end
+                    w:mux_window():spawn_tab(spawn)
                 end),
             },
             pane
