@@ -72,6 +72,13 @@ function M.connect_action()
                     if h.cmd then
                         spawn.args = { 'sh', '-c', h.cmd .. '; exec "$SHELL" -l' }
                     end
+                    -- A domain whose last tab was closed goes Detached, and
+                    -- spawn_tab refuses to spawn into a Detached domain (the menu
+                    -- would then silently do nothing). Re-attach it first.
+                    local dom = wezterm.mux.get_domain(domain_name)
+                    if dom and dom:state() == 'Detached' then
+                        dom:attach()
+                    end
                     w:mux_window():spawn_tab(spawn)
                 end),
             },
