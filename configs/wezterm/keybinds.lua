@@ -64,6 +64,10 @@ function M.apply(config)
         { key = '\\', mods = 'CTRL|SHIFT', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
         -- Horizontal split (pane below)
         { key = '-', mods = 'CTRL|SHIFT', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
+        -- Directional split: enter split mode, then press an arrow to pick the side
+        { key = '=', mods = 'CTRL|SHIFT', action = act.ActivateKeyTable {
+            name = 'split_mode', one_shot = true, timeout_milliseconds = 1500,
+        } },
         -- Focus between panes
         { key = 'LeftArrow', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection 'Left' },
         { key = 'RightArrow', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection 'Right' },
@@ -150,6 +154,17 @@ function M.apply(config)
                 act.ClearScrollback 'ScrollbackAndViewport',
                 act.SendKey { key = 'l', mods = 'CTRL' },
             },
+        },
+    }
+
+    -- Split mode: activated by Ctrl+Shift+=, one arrow press picks the side
+    config.key_tables = {
+        split_mode = {
+            { key = 'UpArrow',    action = act.SplitPane { direction = 'Up',    size = { Percent = 50 } } },
+            { key = 'DownArrow',  action = act.SplitPane { direction = 'Down',  size = { Percent = 50 } } },
+            { key = 'LeftArrow',  action = act.SplitPane { direction = 'Left',  size = { Percent = 50 } } },
+            { key = 'RightArrow', action = act.SplitPane { direction = 'Right', size = { Percent = 50 } } },
+            { key = 'Escape',     action = 'PopKeyTable' },
         },
     }
 
