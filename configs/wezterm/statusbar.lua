@@ -50,6 +50,11 @@ function M.setup()
         -- ── Right status: [ssh host] | directory | date time ──
         local right_cells = {}
 
+        -- Split-mode indicator (active only while Ctrl+Shift+= mode is on)
+        if window:active_key_table() == 'split_mode' then
+            table.insert(right_cells, { icon = '◧', text = 'SPLIT ↑↓←→', fg = c.peach })
+        end
+
         -- SSH hostname (if connected via SSH domain)
         local domain = pane:get_domain_name()
         if domain and domain ~= 'local' and domain ~= '' then
