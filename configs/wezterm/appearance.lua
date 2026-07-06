@@ -36,15 +36,6 @@ M.colors = {
 M.scheme = 'Gruvbox Material (Gogh)'
 -- ══ THEME: END ══
 
-M.tab_palette = {
-    { bg = M.colors.red,    fg = M.colors.base },
-    { bg = M.colors.green,  fg = M.colors.base },
-    { bg = M.colors.yellow, fg = M.colors.base },
-    { bg = M.colors.blue,   fg = M.colors.base },
-    { bg = M.colors.mauve,  fg = M.colors.base },
-    { bg = M.colors.peach,  fg = M.colors.base },
-}
-
 function M.apply(config)
     local c = M.colors
 
@@ -223,15 +214,15 @@ function M.apply(config)
             title = wezterm.truncate_right(title, math.max(budget - 1, 1)) .. '…'
         end
 
-        local override_idx = utils.tab_color_override(tab.tab_id)
-        local override = override_idx and M.tab_palette[override_idx]
+        local override = utils.tab_color_override(tab.tab_id)
         local obg, ofg
         if override then
+            local base_fg = utils.is_light(override) and c.base or c.text
             if tab.is_active then
-                obg, ofg = override.bg, override.fg
+                obg, ofg = override, base_fg
             else
-                obg = utils.dim_color(override.bg, 0.5)
-                ofg = utils.dim_color(override.fg, 0.8)
+                obg = utils.dim_color(override, 0.5)
+                ofg = utils.dim_color(base_fg, 0.8)
             end
         end
 

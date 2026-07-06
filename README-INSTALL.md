@@ -135,7 +135,7 @@ wezterm ls-fonts 2>&1 | head -1
 ├── scan-dirs.lua            — загрузчик списка каталогов для Ctrl+Shift+E из private/ (fallback на пустой список)
 ├── scan-dirs.example.lua    — шаблон для списка каталогов проектов
 ├── open-dir-in-nvim.sh      — fzf-пикер каталогов (Ctrl+Shift+E) → nvim в новом табе
-├── pick-tab-color.sh        — fzf-пикер цвета таба (Ctrl+Shift+L) → маркер-файл → format-tab-title
+├── pick-color-grid.sh       — 2D-грид-пикер цвета таба (Ctrl+Shift+L, стрелки/мышь) → маркер-файл → format-tab-title
 ├── workspaces.lua           — workspace по умолчанию
 ├── statusbar.lua            — powerline статусбар (workspace, SSH host, dir, время)
 ├── hyperlinks.lua           — URL + file:line ссылки (nvim:// scheme) + шаблон для тикетов
@@ -267,7 +267,7 @@ Host alias
 | `Ctrl+Shift+Q` | Закрыть таб |
 | `Ctrl+Shift+<` / `>` | Переместить таб влево / вправо |
 | `Ctrl+Shift+R` | Переименовать таб (пустой ввод — сброс на авто-имя) |
-| `Ctrl+Shift+L` | Выбрать цвет таба (fzf: red, green, yellow, blue, purple, peach, reset) |
+| `Ctrl+Shift+L` | Выбрать цвет таба (2D-грид: стрелки/мышь, верхний ряд — цвета темы, `#` ввод hex, `r` reset, `q` отмена) |
 | `Ctrl+Shift+\` | Сплит вправо |
 | `Ctrl+Shift+-` | Сплит вниз |
 | `Ctrl+Shift+=` затем стрелка | Сплит в выбранную сторону (режим, `Escape` — отмена) |
@@ -294,7 +294,7 @@ Host alias
 - **Ctrl+Delete**: удаление слова вперёд. Фикс в `keybinds.lua` (SendString `\e[3;5~`) и `wezterm.fish` (bind → kill-word)
 - **Копирование мышью**: автокопирование при выделении отключено. Копировать: правый клик или Ctrl+Shift+C
 - **Прокрутка мыши**: 3 строки за щелчок колёсика (вместо дефолтных ~5)
-- **Заголовки табов**: шеллы показывают `fish ~/path`, TUI-программы — `process dirname` (например, `claude my-repo`, `nvim my-project`), SSH-домены — имя хоста (`stage`, `gitlab`). Жёлтый ● если есть незакоммиченные git-изменения. Ручное переименование (`Ctrl+Shift+R`) — иконка 󰏫. Цвет таба (`Ctrl+Shift+L`) — fzf-пикер из 6 цветов темы + reset; активный таб полный цвет, неактивный димmed (brightness 0.5/0.8)
+- **Заголовки табов**: шеллы показывают `fish ~/path`, TUI-программы — `process dirname` (например, `claude my-repo`, `nvim my-project`), SSH-домены — имя хоста (`stage`, `gitlab`). Жёлтый ● если есть незакоммиченные git-изменения. Ручное переименование (`Ctrl+Shift+R`) — иконка 󰏫. Цвет таба (`Ctrl+Shift+L`) — 2D-грид truecolor-свотчей: верхний ряд — именованные цвета темы, ниже 12 оттенков × строки светлоты + серый ряд. Навигация стрелками или мышью (клик = выбор), `Enter`/`Space` — выбрать, `#` — ввод произвольного `#rrggbb`, `r` — reset, `q`/`Esc` — отмена; всё в терминале, без GUI (кроссплатформенно). Цвет текста подбирается по яркости фона, активный таб полный цвет, неактивный димmed (brightness 0.5/0.8)
 - **Нормализация процессов**: Claude Code использует version-based бинарник (`~/.local/share/claude/versions/X.Y.Z`), `utils.lua` нормализует имя обратно в "claude"
 
 ---
