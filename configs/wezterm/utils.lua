@@ -90,9 +90,19 @@ function M.git_dirty(dir)
     return dirty
 end
 
--- Read tab color override from marker file written by pick-tab-color.sh.
+-- Perceptual luminance test: true if a #rrggbb color is light enough to need
+-- dark text on top (ITU-R BT.601 weights).
+function M.is_light(hex)
+    local r = tonumber(hex:sub(2, 3), 16)
+    local g = tonumber(hex:sub(4, 5), 16)
+    local b = tonumber(hex:sub(6, 7), 16)
+    return (0.299 * r + 0.587 * g + 0.114 * b) > 140
+end
+
+-- Read tab color override from marker file written by pick-color-grid.sh.
 -- On first read, applies the value to wezterm.GLOBAL.tab_colors and removes
--- the marker. Returns palette index (1-based) or nil for no override / reset.
+-- the marker. Marker holds a #rrggbb hex or "reset". Returns the hex color
+-- string or nil for no override / reset.
 function M.tab_color_override(tab_id)
     local id = tostring(tab_id)
     wezterm.GLOBAL.tab_colors = wezterm.GLOBAL.tab_colors or {}
@@ -102,12 +112,8 @@ function M.tab_color_override(tab_id)
         local line = f:read('*l')
         f:close()
         os.remove(marker)
-        local idx = tonumber(line) or 0
-        if idx > 0 then
-            wezterm.GLOBAL.tab_colors[id] = idx
-        else
-            wezterm.GLOBAL.tab_colors[id] = nil
-        end
+        local hex = line and line:match('^#%x%x%x%x%x%x$')
+        wezterm.GLOBAL.tab_colors[id] = hex or nil
     end
     return wezterm.GLOBAL.tab_colors[id]
 end

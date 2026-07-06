@@ -58,8 +58,8 @@ function M.apply(config)
                 end),
             },
         },
-        -- Open fzf color picker in a new tab; writes choice to marker file
-        -- /tmp/wezterm-tab-color-<tab_id>, consumed by format-tab-title.
+        -- Open the 2D color-grid picker in a new tab; writes choice to marker
+        -- file /tmp/wezterm-tab-color-<tab_id>, consumed by format-tab-title.
         {
             key = 'l',
             mods = 'CTRL|SHIFT',
@@ -67,7 +67,7 @@ function M.apply(config)
                 local tab_id = window:active_tab():tab_id()
                 window:perform_action(
                     act.SpawnCommandInNewTab {
-                        args = { 'bash', wezterm.config_dir .. '/pick-tab-color.sh', tostring(tab_id) },
+                        args = { 'bash', wezterm.config_dir .. '/pick-color-grid.sh', tostring(tab_id) },
                     },
                     pane
                 )
