@@ -97,11 +97,10 @@ link_files "$SCRIPT_DIR/configs/fish/conf.d"      ~/.config/fish/conf.d      "co
 link_files "$SCRIPT_DIR/configs/fish/functions"    ~/.config/fish/functions    "configs/fish/functions"
 link_files "$SCRIPT_DIR/configs/fish/completions"  ~/.config/fish/completions  "configs/fish/completions"
 
-if [ -f "$SCRIPT_DIR/private/fish/conf.d/private.fish" ]; then
-    ln -sfn "$SCRIPT_DIR/private/fish/conf.d/private.fish" ~/.config/fish/conf.d/private.fish
-    echo "  ~/.config/fish/conf.d/private.fish → private/fish/conf.d/private.fish"
+if [ -d "$SCRIPT_DIR/private/fish/conf.d" ] && ls -A "$SCRIPT_DIR/private/fish/conf.d" >/dev/null 2>&1; then
+    link_files "$SCRIPT_DIR/private/fish/conf.d" ~/.config/fish/conf.d "private/fish/conf.d"
 else
-    echo "  ~/.config/fish/conf.d/private.fish — skipped (private not found)"
+    echo "  ~/.config/fish/conf.d (private) — skipped (private not found)"
 fi
 
 # ── Neovim ───────────────────────────────────────────────────────────
