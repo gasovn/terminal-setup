@@ -58,6 +58,21 @@ function M.apply(config)
                 end),
             },
         },
+        -- Open fzf color picker in a new tab; writes choice to marker file
+        -- /tmp/wezterm-tab-color-<tab_id>, consumed by format-tab-title.
+        {
+            key = 'l',
+            mods = 'CTRL|SHIFT',
+            action = wezterm.action_callback(function(window, pane)
+                local tab_id = window:active_tab():tab_id()
+                window:perform_action(
+                    act.SpawnCommandInNewTab {
+                        args = { 'bash', wezterm.config_dir .. '/pick-tab-color.sh', tostring(tab_id) },
+                    },
+                    pane
+                )
+            end),
+        },
 
         -- ═══ Splits (panes) ═══
         -- Vertical split (pane to the right)

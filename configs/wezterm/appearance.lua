@@ -36,6 +36,15 @@ M.colors = {
 M.scheme = 'Gruvbox Material (Gogh)'
 -- ══ THEME: END ══
 
+M.tab_palette = {
+    { bg = M.colors.red,    fg = M.colors.base },
+    { bg = M.colors.green,  fg = M.colors.base },
+    { bg = M.colors.yellow, fg = M.colors.base },
+    { bg = M.colors.blue,   fg = M.colors.base },
+    { bg = M.colors.mauve,  fg = M.colors.base },
+    { bg = M.colors.peach,  fg = M.colors.base },
+}
+
 function M.apply(config)
     local c = M.colors
 
@@ -214,14 +223,32 @@ function M.apply(config)
             title = wezterm.truncate_right(title, math.max(budget - 1, 1)) .. '…'
         end
 
-        if dirty then
-            return wezterm.format {
-                { Text = ' ' .. idx .. ': ' .. icon .. ' ' .. title .. ' ' },
-                { Foreground = { Color = c.yellow } },
-                { Text = '● ' },
-            }
+        local override_idx = utils.tab_color_override(tab.tab_id)
+        local override = override_idx and M.tab_palette[override_idx]
+        local obg, ofg
+        if override then
+            if tab.is_active then
+                obg, ofg = override.bg, override.fg
+            else
+                obg = utils.dim_color(override.bg, 0.5)
+                ofg = utils.dim_color(override.fg, 0.8)
+            end
         end
-        return ' ' .. idx .. ': ' .. icon .. ' ' .. title .. ' '
+
+        local parts = {
+            { Text = ' ' .. idx .. ': ' .. icon .. ' ' .. title .. ' ' },
+        }
+        if dirty then
+            table.insert(parts, { Foreground = { Color = override and ofg or c.yellow } })
+            table.insert(parts, { Text = '● ' })
+        end
+
+        if override then
+            table.insert(parts, 1, { Background = { Color = obg } })
+            table.insert(parts, 2, { Foreground = { Color = ofg } })
+        end
+
+        return wezterm.format(parts)
     end)
 end
 

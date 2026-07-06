@@ -1,6 +1,17 @@
 local wezterm = require 'wezterm'
 local M = {}
 
+-- Dim a #rrggbb hex color by factor (0..1), returns #rrggbb
+function M.dim_color(hex, factor)
+    local r = tonumber(hex:sub(2, 3), 16)
+    local g = tonumber(hex:sub(4, 5), 16)
+    local b = tonumber(hex:sub(6, 7), 16)
+    r = math.floor(r * factor + 0.5)
+    g = math.floor(g * factor + 0.5)
+    b = math.floor(b * factor + 0.5)
+    return string.format('#%02x%02x%02x', r, g, b)
+end
+
 -- Process name → Nerd Font icon
 M.process_icons = {
     ['fish'] = '󰈺',
@@ -77,6 +88,28 @@ function M.git_dirty(dir)
     local dirty = stdout ~= nil and stdout ~= ''
     wezterm.GLOBAL.git_cache[dir] = { dirty = dirty, time = now }
     return dirty
+end
+
+-- Read tab color override from marker file written by pick-tab-color.sh.
+-- On first read, applies the value to wezterm.GLOBAL.tab_colors and removes
+-- the marker. Returns palette index (1-based) or nil for no override / reset.
+function M.tab_color_override(tab_id)
+    local id = tostring(tab_id)
+    wezterm.GLOBAL.tab_colors = wezterm.GLOBAL.tab_colors or {}
+    local marker = '/tmp/wezterm-tab-color-' .. id
+    local f = io.open(marker, 'r')
+    if f then
+        local line = f:read('*l')
+        f:close()
+        os.remove(marker)
+        local idx = tonumber(line) or 0
+        if idx > 0 then
+            wezterm.GLOBAL.tab_colors[id] = idx
+        else
+            wezterm.GLOBAL.tab_colors[id] = nil
+        end
+    end
+    return wezterm.GLOBAL.tab_colors[id]
 end
 
 -- Extract SSH hostname from pane info
