@@ -13,6 +13,7 @@
 | `Ctrl+Shift+Q` | Закрыть таб |
 | `Ctrl+Shift+<` / `>` | Переместить таб влево / вправо |
 | `Ctrl+Shift+R` | Переименовать таб (пустой ввод — сброс на авто-имя) |
+| `Ctrl+Shift+L` | Выбрать цвет таба (fzf-пикер: red, green, yellow, blue, purple, peach, reset) |
 
 ### Сплиты (панели)
 | Хоткей | Действие |
@@ -170,6 +171,7 @@ return {
   ssh-hosts.lua             — загрузчик хостов из private/
   scan-dirs.lua             — загрузчик списка каталогов для Ctrl+Shift+E из private/
   open-dir-in-nvim.sh       — fzf-пикер каталогов (Ctrl+Shift+E)
+  pick-tab-color.sh         — fzf-пикер цвета таба (Ctrl+Shift+L)
   ssh.lua                   — SSH-домены и меню подключений
   nvim-open.lua             — Ctrl+Click file:line → открытие в Neovim (cross-pane)
 ~/.config/fish/             — Fish shell

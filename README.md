@@ -10,7 +10,7 @@ WezTerm + Fish + Starship + Neovim (LazyVim) with a one-command theme switcher.
 
 | Tool | Details |
 |------|---------|
-| **WezTerm** | Lua-based config with SSH connect menu, SFTP, workspaces, directory picker → nvim, Ctrl+Click file:line → nvim |
+| **WezTerm** | Lua-based config with SSH connect menu, SFTP, workspaces, directory picker → nvim, tab rename and color picker, Ctrl+Click file:line → nvim |
 | **Fish shell** | Aliases and functions built on eza, bat, ripgrep, fd, zoxide, fzf, yazi |
 | **Neovim** | LazyVim-based IDE: LSP, DAP, neotest, treesitter, telescope, git — Go, TS, Python, Rust |
 | **Starship** | Minimal prompt with git and language context |
