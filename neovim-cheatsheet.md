@@ -187,6 +187,7 @@ Directories show the highest-priority icon from their children. File names are c
 |---|---|
 | `<leader>z` | Zen mode |
 | `<leader>mp` | Markdown preview |
+| `<leader>mr` | Toggle in-buffer markdown rendering |
 | `<leader>Db` | Database UI |
 | `<leader>Da` | Add DB Connection |
 | `<leader>sn` | Notification history |
