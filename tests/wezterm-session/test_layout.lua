@@ -31,3 +31,53 @@ h.it('builds a split from two panes stacked one above the other', function()
         b = { kind = 'leaf', rect = lower },
     })
 end)
+
+-- Measured on a real wezterm after: split Right 0.25, then split Bottom 0.25
+-- on the original pane.
+local three_a = { left = 0,  top = 0,  width = 59, height = 17 }
+local three_b = { left = 0,  top = 18, width = 59, height = 6 }
+local three_c = { left = 60, top = 0,  width = 20, height = 24 }
+
+h.it('nests a horizontal split inside the left part of a vertical one', function()
+    h.eq(layout.build({ three_a, three_b, three_c }), {
+        kind = 'split',
+        dir = 'Right',
+        ratio = 0.25,
+        a = {
+            kind = 'split',
+            dir = 'Bottom',
+            ratio = 0.25,
+            a = { kind = 'leaf', rect = three_a },
+            b = { kind = 'leaf', rect = three_b },
+        },
+        b = { kind = 'leaf', rect = three_c },
+    })
+end)
+
+-- Measured after a third split: Top 0.5 on the upper-left pane.
+local four_a = { left = 0,  top = 0,  width = 59, height = 8 }
+local four_b = { left = 0,  top = 9,  width = 59, height = 8 }
+local four_c = { left = 0,  top = 18, width = 59, height = 6 }
+local four_d = { left = 60, top = 0,  width = 20, height = 24 }
+
+h.it('nests two horizontal splits inside a vertical one', function()
+    h.eq(layout.build({ four_a, four_b, four_c, four_d }), {
+        kind = 'split',
+        dir = 'Right',
+        ratio = 0.25,
+        a = {
+            kind = 'split',
+            dir = 'Bottom',
+            ratio = 15 / 24,
+            a = { kind = 'leaf', rect = four_a },
+            b = {
+                kind = 'split',
+                dir = 'Bottom',
+                ratio = 6 / 15,
+                a = { kind = 'leaf', rect = four_b },
+                b = { kind = 'leaf', rect = four_c },
+            },
+        },
+        b = { kind = 'leaf', rect = four_d },
+    })
+end)
