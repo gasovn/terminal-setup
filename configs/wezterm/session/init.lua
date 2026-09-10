@@ -65,25 +65,25 @@ local function describe(window, index)
         if #names == 3 then break end
     end
 
-    local when = 'время неизвестно'
+    local when = 'time unknown'
     if window.last_active then
         when = os.date('%d.%m %H:%M', window.last_active)
     end
 
-    return string.format('Окно %d · %s · вкладок: %d · %s · %s',
+    return string.format('Window %d · %s · %d tabs · %s · %s',
         index, window.workspace, #window.tabs,
-        #names > 0 and table.concat(names, ', ') or 'без имён', when)
+        #names > 0 and table.concat(names, ', ') or 'unnamed', when)
 end
 
 local function selector(eng, model, on_dismiss)
-    local choices = { { label = 'Восстановить всё', id = 'all' } }
+    local choices = { { label = 'Restore everything', id = 'all' } }
     for index, window in ipairs(model.windows) do
         table.insert(choices, { label = describe(window, index), id = tostring(index) })
     end
-    table.insert(choices, { label = 'Начать чисто', id = 'clean' })
+    table.insert(choices, { label = 'Start clean', id = 'clean' })
 
     return act.InputSelector {
-        title = 'Восстановление сессии',
+        title = 'Restore session',
         choices = choices,
         action = wezterm.action_callback(function(window, pane, id, _label)
             if id == nil then
