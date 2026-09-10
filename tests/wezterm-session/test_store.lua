@@ -67,3 +67,21 @@ end)
 h.it('rotating with no snapshot present is not an error', function()
     h.eq(new_store(tmpdir(), {}):rotate(), true)
 end)
+
+h.it('quarantines a snapshot it cannot parse and reports it', function()
+    local dir, logs = tmpdir(), {}
+    local store = new_store(dir, logs)
+
+    local f = io.open(dir .. '/current.json', 'w')
+    f:write('{ this is not our format')
+    f:close()
+
+    h.eq(store:read(), nil)
+
+    local quarantined = io.open(dir .. '/broken-4242.json', 'r')
+    h.eq(quarantined ~= nil, true)
+    quarantined:close()
+
+    h.eq(#logs, 1)
+    h.eq(logs[1]:find('broken%-4242%.json') ~= nil, true)
+end)

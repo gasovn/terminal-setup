@@ -85,10 +85,16 @@ function Store:rotate()
     return true
 end
 
--- Real implementation lands in Task 10; Store:read already calls it, so a stub
--- keeps this task honest about what is not built yet.
+-- An unreadable snapshot must never block the terminal from opening, and must
+-- never be silently discarded either.
 function Store:quarantine()
-    self.log('session: quarantine not implemented yet')
+    local target = string.format('%s/broken-%s.json', self.dir, tostring(self.now()))
+    local ok, err = os.rename(self.path, target)
+    if not ok then
+        self.log('session: cannot quarantine ' .. self.path .. ': ' .. tostring(err))
+        return
+    end
+    self.log('session: unreadable snapshot moved to ' .. target)
 end
 
 return M
