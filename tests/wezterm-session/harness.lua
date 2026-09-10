@@ -5,6 +5,8 @@ local total, failures = 0, 0
 
 local function fmt(v, indent)
     indent = indent or ''
+    -- Quoted, so that the string '0.25' does not look like the number 0.25.
+    if type(v) == 'string' then return "'" .. v .. "'" end
     if type(v) ~= 'table' then return tostring(v) end
     local keys = {}
     for k in pairs(v) do table.insert(keys, k) end
@@ -51,6 +53,11 @@ end
 
 function M.report()
     print(string.format('%d tests, %d failures', total, failures))
+    -- An empty run means the test files stopped being reachable, not success.
+    if total == 0 then
+        print('no tests were collected')
+        os.exit(1)
+    end
     os.exit(failures == 0 and 0 or 1)
 end
 

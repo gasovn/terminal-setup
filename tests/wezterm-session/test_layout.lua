@@ -7,7 +7,7 @@ local layout = require 'session.layout'
 local left  = { left = 0,  top = 0, width = 59, height = 24 }
 local right = { left = 60, top = 0, width = 20, height = 24 }
 
-h.it('builds a vertical split from two side-by-side panes', function()
+h.it('builds a split from two panes side by side', function()
     h.eq(layout.build({ left, right }), {
         kind = 'split',
         dir = 'Right',

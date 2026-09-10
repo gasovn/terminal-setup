@@ -9,6 +9,9 @@
 --
 -- ratio is the share of the second part (b) of the container -- exactly the
 -- number pane:split { size = ... } expects.
+--
+-- M.build returns the root node of the tree, or nil when there is nothing to
+-- build: no rectangles at all, or an arrangement it cannot cut into splits.
 
 local M = {}
 
