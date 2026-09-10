@@ -39,11 +39,24 @@ local function cut_at_x(rects, x)
     return nil
 end
 
+local function cut_at_y(rects, y)
+    local a, b = {}, {}
+    for _, q in ipairs(rects) do
+        if q.top + q.height <= y then
+            table.insert(a, q)
+        elseif q.top >= y + 1 then
+            table.insert(b, q)
+        end
+    end
+    if #a > 0 and #b > 0 and #a + #b == #rects then return a, b end
+    return nil
+end
+
 function M.build(rects)
     if #rects == 0 then return nil end
     if #rects == 1 then return { kind = 'leaf', rect = rects[1] } end
 
-    local l, _, r, _ = bounds(rects)
+    local l, t, r, bt = bounds(rects)
     for _, q in ipairs(rects) do
         local x = q.left + q.width
         if x < r then
@@ -55,6 +68,25 @@ function M.build(rects)
                         kind = 'split',
                         dir = 'Right',
                         ratio = (r - (x + 1)) / (r - l),
+                        a = ta,
+                        b = tb,
+                    }
+                end
+            end
+        end
+    end
+
+    for _, q in ipairs(rects) do
+        local y = q.top + q.height
+        if y < bt then
+            local a, b = cut_at_y(rects, y)
+            if a then
+                local ta, tb = M.build(a), M.build(b)
+                if ta and tb then
+                    return {
+                        kind = 'split',
+                        dir = 'Bottom',
+                        ratio = (bt - (y + 1)) / (bt - t),
                         a = ta,
                         b = tb,
                     }

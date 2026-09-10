@@ -16,3 +16,18 @@ h.it('builds a split from two panes side by side', function()
         b = { kind = 'leaf', rect = right },
     })
 end)
+
+-- Measured: a 24-row container split with size = 0.25 leaves 17 rows above,
+-- one divider row, 6 rows below.
+local upper = { left = 0, top = 0,  width = 59, height = 17 }
+local lower = { left = 0, top = 18, width = 59, height = 6 }
+
+h.it('builds a split from two panes stacked one above the other', function()
+    h.eq(layout.build({ upper, lower }), {
+        kind = 'split',
+        dir = 'Bottom',
+        ratio = 0.25,
+        a = { kind = 'leaf', rect = upper },
+        b = { kind = 'leaf', rect = lower },
+    })
+end)
