@@ -10,12 +10,19 @@ WezTerm + Fish + Starship + Neovim (LazyVim) with a one-command theme switcher.
 
 | Tool | Details |
 |------|---------|
-| **WezTerm** | Lua-based config with SSH connect menu, SFTP, workspaces, directory picker → nvim, tab rename and color picker, Ctrl+Click file:line → nvim |
+| **WezTerm** | Lua-based config with SSH connect menu, SFTP, workspaces, directory picker → nvim, tab rename and color picker, Ctrl+Click file:line → nvim, session restore |
 | **Fish shell** | Aliases and functions built on eza, bat, ripgrep, fd, zoxide, fzf, yazi |
 | **Neovim** | LazyVim-based IDE: LSP, DAP, neotest, treesitter, telescope, git — Go, TS, Python, Rust |
 | **Starship** | Minimal prompt with git and language context |
 | **SSH** | Grouped host management with a WezTerm connect menu |
 | **Theme switcher** | Switches Gruvbox Material / Catppuccin Mocha across all tools at once |
+
+**Session restore.** On exit WezTerm remembers the open tabs — their names, colours,
+directories and pane layout — and offers to rebuild them at the next start: everything,
+one particular window, or nothing. Choosing "start clean" moves the previous snapshot to
+`previous.json` instead of deleting it. The snapshot lives in
+`~/.local/state/wezterm-session/` and never enters the repository. Programs running in
+panes are not restored: a restored pane is a shell in the saved directory.
 
 ---
 
