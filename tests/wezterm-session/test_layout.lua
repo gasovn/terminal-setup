@@ -81,3 +81,21 @@ h.it('nests two horizontal splits inside a vertical one', function()
         b = { kind = 'leaf', rect = four_d },
     })
 end)
+
+h.it('returns a leaf for a single pane', function()
+    local only = { left = 0, top = 0, width = 80, height = 24 }
+    h.eq(layout.build({ only }), { kind = 'leaf', rect = only })
+end)
+
+-- A pinwheel cannot be produced by any sequence of splits: no straight cut
+-- separates it into two groups. build() must say so instead of inventing a tree.
+h.it('returns nil for a layout no sequence of splits can produce', function()
+    local pinwheel = {
+        { left = 0,  top = 0,  width = 20, height = 10 },
+        { left = 21, top = 0,  width = 9,  height = 20 },
+        { left = 11, top = 21, width = 19, height = 9 },
+        { left = 0,  top = 11, width = 10, height = 19 },
+        { left = 11, top = 11, width = 9,  height = 9 },
+    }
+    h.eq(layout.build(pinwheel), nil)
+end)
