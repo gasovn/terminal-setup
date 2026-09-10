@@ -64,4 +64,11 @@ function M.build(mux, windows, ctx)
     return created
 end
 
+-- A repository that has been moved or deleted must not stop its tab from
+-- opening: the tab comes back in the home directory instead.
+function M.resolve_cwd(cwd, dir_exists, home)
+    if cwd and dir_exists(cwd) then return cwd end
+    return home
+end
+
 return M

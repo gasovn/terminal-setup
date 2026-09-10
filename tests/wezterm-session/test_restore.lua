@@ -123,3 +123,11 @@ h.it('restores several windows, their workspaces and the active tab of each', fu
     h.eq(spawned_tabs, { '/b' })
     h.eq(#activated, 2)
 end)
+
+h.it('falls back to home when a saved directory is gone', function()
+    local exists = function(path) return path == '/still/here' end
+
+    h.eq(restore.resolve_cwd('/still/here', exists, '/home/wolf'), '/still/here')
+    h.eq(restore.resolve_cwd('/deleted', exists, '/home/wolf'), '/home/wolf')
+    h.eq(restore.resolve_cwd(nil, exists, '/home/wolf'), '/home/wolf')
+end)
