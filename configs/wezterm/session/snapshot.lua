@@ -81,4 +81,31 @@ function M.capture(mux, ctx)
     return { version = 1, saved_at = ctx.now, windows = windows }
 end
 
+-- Fingerprint of everything worth persisting. Timestamps are excluded on
+-- purpose: including them would rewrite the file every tick. Ratios are
+-- rounded to 1% so resizing the window does not count as a change.
+local function fingerprint_node(node, out)
+    if node.kind == 'leaf' then
+        out[#out + 1] = 'L:' .. tostring(node.cwd) .. ':' .. tostring(node.zoomed)
+        return
+    end
+    out[#out + 1] = string.format('S:%s:%.2f', node.dir, node.ratio)
+    fingerprint_node(node.a, out)
+    fingerprint_node(node.b, out)
+    out[#out + 1] = 'E'
+end
+
+function M.fingerprint(model)
+    local out = {}
+    for i, w in ipairs(model.windows) do
+        out[#out + 1] = string.format('W%d:%s', i, tostring(w.workspace))
+        for _, t in ipairs(w.tabs) do
+            out[#out + 1] = string.format('T:%s:%s:%s',
+                tostring(t.title), tostring(t.color), tostring(t.is_active))
+            fingerprint_node(t.layout, out)
+        end
+    end
+    return table.concat(out, '|')
+end
+
 return M

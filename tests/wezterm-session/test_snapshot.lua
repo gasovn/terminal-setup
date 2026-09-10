@@ -92,3 +92,43 @@ h.it('captures every window, its workspace and its last activity', function()
     h.eq(model.windows[1].last_active, 1000)
     h.eq(model.windows[2].last_active, nil)
 end)
+
+local function one_pane_model(cwd, saved_at, last_active)
+    return {
+        version = 1,
+        saved_at = saved_at,
+        windows = { {
+            workspace = 'main', last_active = last_active,
+            tabs = { { is_active = true,
+                       layout = { kind = 'leaf', cwd = cwd, zoomed = false } } },
+        } },
+    }
+end
+
+h.it('ignores timestamps so an idle session is not rewritten every tick', function()
+    h.eq(snapshot.fingerprint(one_pane_model('/a', 1000, 1000)),
+         snapshot.fingerprint(one_pane_model('/a', 2000, 2000)))
+end)
+
+h.it('reacts to a changed working directory', function()
+    h.eq(snapshot.fingerprint(one_pane_model('/a', 1000, 1000))
+         ~= snapshot.fingerprint(one_pane_model('/b', 1000, 1000)), true)
+end)
+
+h.it('rounds split ratios so window resize jitter does not rewrite the file', function()
+    local function with_ratio(r)
+        return {
+            version = 1, saved_at = 1000,
+            windows = { { workspace = 'main', tabs = { {
+                is_active = true,
+                layout = {
+                    kind = 'split', dir = 'Right', ratio = r,
+                    a = { kind = 'leaf', cwd = '/a', zoomed = false },
+                    b = { kind = 'leaf', cwd = '/b', zoomed = false },
+                },
+            } } } },
+        }
+    end
+    h.eq(snapshot.fingerprint(with_ratio(0.2503)), snapshot.fingerprint(with_ratio(0.2498)))
+    h.eq(snapshot.fingerprint(with_ratio(0.25)) ~= snapshot.fingerprint(with_ratio(0.40)), true)
+end)
