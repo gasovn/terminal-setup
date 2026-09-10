@@ -38,7 +38,7 @@ local three_a = { left = 0,  top = 0,  width = 59, height = 17 }
 local three_b = { left = 0,  top = 18, width = 59, height = 6 }
 local three_c = { left = 60, top = 0,  width = 20, height = 24 }
 
-h.it('nests a horizontal split inside the left part of a vertical one', function()
+h.it('nests a stacked pair inside the left column', function()
     h.eq(layout.build({ three_a, three_b, three_c }), {
         kind = 'split',
         dir = 'Right',
@@ -60,7 +60,7 @@ local four_b = { left = 0,  top = 9,  width = 59, height = 8 }
 local four_c = { left = 0,  top = 18, width = 59, height = 6 }
 local four_d = { left = 60, top = 0,  width = 20, height = 24 }
 
-h.it('nests two horizontal splits inside a vertical one', function()
+h.it('nests three panes stacked in the left column', function()
     h.eq(layout.build({ four_a, four_b, four_c, four_d }), {
         kind = 'split',
         dir = 'Right',
