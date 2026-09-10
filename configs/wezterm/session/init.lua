@@ -96,20 +96,24 @@ local function selector(eng, model, on_dismiss)
                 return
             end
 
+            local restored = false
             if id == 'all' then
-                eng:restore_windows(model.windows)
+                restored = eng:restore_windows(model.windows)
             else
                 local chosen = model.windows[tonumber(id)]
                 if chosen then
-                    eng:restore_windows({ chosen })
+                    restored = eng:restore_windows({ chosen })
                 else
                     eng:arm()
                 end
             end
 
-            -- The bootstrap window has served its purpose: closing its only tab
-            -- closes the window and leaves just the restored set on screen.
-            window:perform_action(act.CloseCurrentTab { confirm = false }, pane)
+            -- The bootstrap window is closed only once something has taken its
+            -- place: it is the only window on screen, and closing its last tab
+            -- would quit wezterm. A failed restore must still leave a terminal.
+            if restored then
+                window:perform_action(act.CloseCurrentTab { confirm = false }, pane)
+            end
         end),
     }
 end
@@ -157,9 +161,17 @@ function M.setup()
             if eng.armed then
                 pending = nil
             elseif not asking then
+                -- A latch left set by a throwing dialog would silence tick()
+                -- for the rest of the session, so it is released on failure.
                 asking = true
-                window:perform_action(
-                    selector(eng, pending, function() asking = false end), pane)
+                local ok, err = pcall(function()
+                    window:perform_action(
+                        selector(eng, pending, function() asking = false end), pane)
+                end)
+                if not ok then
+                    asking = false
+                    log('session: cannot show the restore dialog: ' .. tostring(err))
+                end
             end
             return
         end

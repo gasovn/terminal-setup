@@ -91,3 +91,40 @@ h.it('reports a failed capture instead of dying', function()
     h.eq(#logged, 1)
     h.eq(store.writes, 0)
 end)
+
+h.it('moves the previous snapshot aside before rebuilding windows', function()
+    local store, state = fake_store(), { windows = { {} }, marker = 'a' }
+    store.saved = { version = 1, windows = { {}, {}, {} } }
+    local eng = new_engine(store, state)
+
+    eng:restore_windows({ { workspace = 'main', tabs = {} } })
+
+    h.eq(store.rotations, 1)
+end)
+
+local function engine_with_build(store, build)
+    return engine_mod.new {
+        mux = {},
+        store = store,
+        snapshot = fake_snapshot({ windows = { {} }, marker = 'a' }),
+        restore = { build = build },
+        ctx = {},
+        now = function() return 1000 end,
+        log = function() end,
+    }
+end
+
+h.it('reports a restore that threw, and still keeps the snapshot', function()
+    local store = fake_store()
+    local eng = engine_with_build(store, function() error('mux exploded') end)
+
+    h.eq(eng:restore_windows({ { workspace = 'main', tabs = {} } }), false)
+    h.eq(store.rotations, 1)
+end)
+
+h.it('reports a restore that built no windows at all', function()
+    local store = fake_store()
+    local eng = engine_with_build(store, function() return {} end)
+
+    h.eq(eng:restore_windows({ { workspace = 'main', tabs = {} } }), false)
+end)

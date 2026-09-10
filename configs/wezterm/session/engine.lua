@@ -46,19 +46,38 @@ function Engine:tick()
     return true
 end
 
+-- A snapshot of an unknown version, or one whose windows carry no tabs, is
+-- treated as no snapshot at all: it would only fail inside restore.build and
+-- leave the user without the bootstrap window.
 function Engine:pending()
     local saved = self.store:read()
-    if type(saved) ~= 'table' or type(saved.windows) ~= 'table' or #saved.windows == 0 then
+    if type(saved) ~= 'table' or saved.version ~= 1 or type(saved.windows) ~= 'table' then
         return nil
     end
+
+    local windows = {}
+    for _, w in ipairs(saved.windows) do
+        if type(w) == 'table' and type(w.tabs) == 'table' and #w.tabs > 0 then
+            table.insert(windows, w)
+        end
+    end
+    if #windows == 0 then return nil end
+
+    saved.windows = windows
     return saved
 end
 
+-- Rebuilding replaces whatever the mux holds, and the next tick mirrors that
+-- to disk. The snapshot is moved aside first, so restoring one window out of
+-- three cannot destroy the other two: they stay in previous.json.
 function Engine:restore_windows(windows)
-    local ok, err = pcall(self.restore.build, self.mux, windows, self.ctx)
-    if not ok then self.log('session: restore failed: ' .. tostring(err)) end
+    self.store:rotate()
+
+    local ok, created = pcall(self.restore.build, self.mux, windows, self.ctx)
+    if not ok then self.log('session: restore failed: ' .. tostring(created)) end
     self:arm()
-    return ok
+
+    return ok and type(created) == 'table' and #created > 0
 end
 
 function Engine:start_clean()
