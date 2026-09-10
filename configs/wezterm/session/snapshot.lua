@@ -64,8 +64,12 @@ end
 function M.capture(mux, ctx)
     local windows = {}
     for _, win in ipairs(mux.all_windows()) do
-        local id = win:window_id()
-        if is_focused(win) then ctx.last_active[id] = ctx.now end
+        -- String key: in production this table lives in wezterm.GLOBAL, which
+        -- keeps values in its own representation and need not preserve the
+        -- type of a numeric key.
+        local id = tostring(win:window_id())
+        local focused = is_focused(win)
+        if focused then ctx.last_active[id] = ctx.now end
 
         local tabs = {}
         for _, info in ipairs(win:tabs_with_info()) do
@@ -74,6 +78,7 @@ function M.capture(mux, ctx)
 
         table.insert(windows, {
             workspace = win:get_workspace(),
+            is_focused = focused,
             last_active = ctx.last_active[id],
             tabs = tabs,
         })
@@ -83,7 +88,9 @@ end
 
 -- Fingerprint of everything worth persisting. Timestamps are excluded on
 -- purpose: including them would rewrite the file every tick. Ratios are
--- rounded to 1% so resizing the window does not count as a change.
+-- rounded to 1% so resizing the window does not count as a change. Focus is
+-- included even though it is not restored: last_active rides on it, and
+-- without it moving between windows would never reach the file at all.
 local function fingerprint_node(node, out)
     if node.kind == 'leaf' then
         out[#out + 1] = 'L:' .. tostring(node.cwd) .. ':' .. tostring(node.zoomed)
@@ -98,7 +105,8 @@ end
 function M.fingerprint(model)
     local out = {}
     for i, w in ipairs(model.windows) do
-        out[#out + 1] = string.format('W%d:%s', i, tostring(w.workspace))
+        out[#out + 1] = string.format('W%d:%s:%s', i, tostring(w.workspace),
+            tostring(w.is_focused))
         for _, t in ipairs(w.tabs) do
             out[#out + 1] = string.format('T:%s:%s:%s',
                 tostring(t.title), tostring(t.color), tostring(t.is_active))

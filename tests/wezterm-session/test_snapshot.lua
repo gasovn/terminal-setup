@@ -27,6 +27,7 @@ h.it('captures one window with one tab and one pane', function()
         saved_at = 1000,
         windows = { {
             workspace = 'main',
+            is_focused = true,
             last_active = 1000,
             tabs = { {
                 is_active = true,
@@ -131,4 +132,21 @@ h.it('rounds split ratios so window resize jitter does not rewrite the file', fu
     end
     h.eq(snapshot.fingerprint(with_ratio(0.2503)), snapshot.fingerprint(with_ratio(0.2498)))
     h.eq(snapshot.fingerprint(with_ratio(0.25)) ~= snapshot.fingerprint(with_ratio(0.40)), true)
+end)
+
+h.it('reacts to a focus change so window activity reaches the file', function()
+    local function focused_on(index)
+        local rec = fakes.recorder()
+        local main = fakes.win(rec, 3, 'main', {
+            fakes.tab(rec, 7, '', { { left = 0, top = 0, width = 80, height = 24,
+                                      pane = fakes.pane(rec, 1, '/a') } }),
+        }, index == 1)
+        local other = fakes.win(rec, 4, 'homelab', {
+            fakes.tab(rec, 9, '', { { left = 0, top = 0, width = 80, height = 24,
+                                      pane = fakes.pane(rec, 2, '/b') } }),
+        }, index == 2)
+        return snapshot.capture(fakes.mux(rec, { main, other }), ctx())
+    end
+
+    h.eq(snapshot.fingerprint(focused_on(1)) ~= snapshot.fingerprint(focused_on(2)), true)
 end)
