@@ -65,3 +65,61 @@ h.it('replays a nested split tree in depth-first order', function()
     h.eq(splits[2].on, splits[1].on)
     h.eq(splits[1].new ~= splits[2].new, true)
 end)
+
+h.it('restores the manual title, the colour and the zoomed pane', function()
+    local rec = fakes.recorder()
+    local colors = {}
+
+    restore.build(fakes.mux(rec, {}), { {
+        workspace = 'main',
+        tabs = { {
+            title = 'PipeHealth', color = '#a9b665', is_active = true,
+            layout = {
+                kind = 'split', dir = 'Right', ratio = 0.25,
+                a = leaf('/left'), b = leaf('/right', true),
+            },
+        } },
+    } }, ctx(colors))
+
+    local ops = {}
+    for _, call in ipairs(rec.calls) do table.insert(ops, call.op) end
+    h.eq(ops, {
+        'spawn_window', 'split', 'set_title', 'activate_pane', 'set_zoomed', 'activate_tab',
+    })
+
+    local titled
+    for _, call in ipairs(rec.calls) do
+        if call.op == 'set_title' then titled = call end
+    end
+    h.eq(titled.title, 'PipeHealth')
+    h.eq(colors[tostring(titled.tab)], '#a9b665')
+end)
+
+h.it('restores several windows, their workspaces and the active tab of each', function()
+    local rec = fakes.recorder()
+
+    restore.build(fakes.mux(rec, {}), {
+        {
+            workspace = 'main',
+            tabs = {
+                { is_active = false, layout = leaf('/a') },
+                { is_active = true,  layout = leaf('/b') },
+            },
+        },
+        {
+            workspace = 'homelab',
+            tabs = { { is_active = true, layout = leaf('/c') } },
+        },
+    }, ctx({}))
+
+    local spawned_windows, spawned_tabs, activated = {}, {}, {}
+    for _, call in ipairs(rec.calls) do
+        if call.op == 'spawn_window' then table.insert(spawned_windows, call.workspace) end
+        if call.op == 'spawn_tab' then table.insert(spawned_tabs, call.cwd) end
+        if call.op == 'activate_tab' then table.insert(activated, call.tab) end
+    end
+
+    h.eq(spawned_windows, { 'main', 'homelab' })
+    h.eq(spawned_tabs, { '/b' })
+    h.eq(#activated, 2)
+end)
