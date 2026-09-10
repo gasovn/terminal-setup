@@ -70,6 +70,21 @@ function Store:read()
     return model
 end
 
+-- Called when the user chooses "start clean". Renaming instead of deleting
+-- keeps the only irreversible action in the plugin reversible by hand.
+function Store:rotate()
+    local f = io.open(self.path, 'r')
+    if not f then return true end
+    f:close()
+
+    local ok, err = os.rename(self.path, self.previous)
+    if not ok then
+        self.log('session: cannot rotate snapshot: ' .. tostring(err))
+        return false
+    end
+    return true
+end
+
 -- Real implementation lands in Task 10; Store:read already calls it, so a stub
 -- keeps this task honest about what is not built yet.
 function Store:quarantine()

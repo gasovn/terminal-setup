@@ -49,3 +49,21 @@ h.it('leaves no temporary file behind', function()
     new_store(dir, {}):write({ marker = 'hello' })
     h.eq(io.open(dir .. '/current.json.tmp', 'r'), nil)
 end)
+
+h.it('moves the previous snapshot aside instead of deleting it', function()
+    local dir, logs = tmpdir(), {}
+    local store = new_store(dir, logs)
+    store:write({ marker = 'yesterday' })
+
+    h.eq(store:rotate(), true)
+    h.eq(store:read(), nil)
+
+    local kept = io.open(dir .. '/previous.json', 'r')
+    h.eq(kept ~= nil, true)
+    h.eq(kept:read('*a'), 'ENC:yesterday')
+    kept:close()
+end)
+
+h.it('rotating with no snapshot present is not an error', function()
+    h.eq(new_store(tmpdir(), {}):rotate(), true)
+end)
