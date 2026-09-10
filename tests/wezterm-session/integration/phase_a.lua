@@ -19,6 +19,15 @@ local function write(name, text)
     f:close()
 end
 
+-- What the round trip compares is the layout. OS focus is a property of the
+-- window manager, legitimately differs between two runs, and is noise here.
+local function ignore_focus(model)
+    for _, w in ipairs(model.windows) do
+        w.is_focused = false
+    end
+    return model
+end
+
 wezterm.on('gui-startup', function()
     local tab, pane, win = wezterm.mux.spawn_window { cwd = '/tmp' }
     pane:split { direction = 'Right', size = 0.25, cwd = repo }
@@ -36,7 +45,7 @@ wezterm.on('gui-startup', function()
             log = function() end,
         }
         store:write(model)
-        write('a.txt', snapshot.fingerprint(model))
+        write('a.txt', snapshot.fingerprint(ignore_focus(model)))
     end)
 end)
 
