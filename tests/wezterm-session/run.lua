@@ -3,5 +3,6 @@ package.path = 'configs/wezterm/?.lua;tests/wezterm-session/?.lua;' .. package.p
 local harness = require 'harness'
 
 require 'test_layout'
+require 'test_snapshot'
 
 harness.report()
