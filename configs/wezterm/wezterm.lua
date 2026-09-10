@@ -13,5 +13,6 @@ require('workspaces').apply(config)
 require('hyperlinks').apply(config)
 require('statusbar').setup()
 require('nvim-open').setup()
+require('session.init').setup()
 
 return config
