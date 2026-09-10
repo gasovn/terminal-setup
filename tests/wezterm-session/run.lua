@@ -6,5 +6,6 @@ require 'test_layout'
 require 'test_snapshot'
 require 'test_store'
 require 'test_restore'
+require 'test_engine'
 
 harness.report()
