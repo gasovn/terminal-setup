@@ -80,6 +80,15 @@ function Engine:restore_windows(windows)
     return ok and type(created) == 'table' and #created > 0
 end
 
+-- A mux window spawned at runtime gets its GUI window a turn of the event loop
+-- later, measured at about 30 ms. Close the bootstrap before that and wezterm
+-- is left with nothing on screen, so it quits.
+function M.bootstrap_close_decision(gui_window_count, attempts_left)
+    if gui_window_count ~= nil and gui_window_count > 1 then return 'close' end
+    if attempts_left > 0 then return 'wait' end
+    return 'keep'
+end
+
 function Engine:start_clean()
     self.store:rotate()
     self:arm()

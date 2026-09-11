@@ -75,6 +75,26 @@ local function describe(window, index)
         #names > 0 and table.concat(names, ', ') or 'unnamed', when)
 end
 
+local function close_bootstrap(window, pane, attempts)
+    local ok, windows = pcall(function() return wezterm.gui.gui_windows() end)
+    local on_screen
+    if ok and windows then on_screen = #windows end
+
+    local decision = engine_mod.bootstrap_close_decision(on_screen, attempts)
+
+    if decision == 'close' then
+        pcall(function()
+            window:perform_action(act.CloseCurrentTab { confirm = false }, pane)
+        end)
+    elseif decision == 'wait' then
+        wezterm.time.call_after(0.1, function()
+            close_bootstrap(window, pane, attempts - 1)
+        end)
+    else
+        log('session: the restored windows never reached the screen, keeping the bootstrap one')
+    end
+end
+
 local function selector(eng, model, on_dismiss)
     local choices = { { label = 'Restore everything', id = 'all' } }
     for index, window in ipairs(model.windows) do
@@ -108,11 +128,9 @@ local function selector(eng, model, on_dismiss)
                 end
             end
 
-            -- The bootstrap window is closed only once something has taken its
-            -- place: it is the only window on screen, and closing its last tab
-            -- would quit wezterm. A failed restore must still leave a terminal.
+            -- A failed restore must still leave the user a terminal.
             if restored then
-                window:perform_action(act.CloseCurrentTab { confirm = false }, pane)
+                close_bootstrap(window, pane, 20)
             end
         end),
     }

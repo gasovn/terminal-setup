@@ -128,3 +128,20 @@ h.it('reports a restore that built no windows at all', function()
 
     h.eq(eng:restore_windows({ { workspace = 'main', tabs = {} } }), false)
 end)
+
+h.it('waits with closing the bootstrap while it is the only window on screen', function()
+    h.eq(engine_mod.bootstrap_close_decision(1, 20), 'wait')
+end)
+
+h.it('closes the bootstrap once the restored window is on screen', function()
+    h.eq(engine_mod.bootstrap_close_decision(2, 20), 'close')
+end)
+
+h.it('keeps the bootstrap rather than leaving no terminal at all', function()
+    h.eq(engine_mod.bootstrap_close_decision(1, 0), 'keep')
+end)
+
+h.it('treats an unknown window count as a reason to wait', function()
+    h.eq(engine_mod.bootstrap_close_decision(nil, 5), 'wait')
+    h.eq(engine_mod.bootstrap_close_decision(nil, 0), 'keep')
+end)
