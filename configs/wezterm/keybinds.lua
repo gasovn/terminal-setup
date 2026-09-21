@@ -41,22 +41,30 @@ function M.apply(config)
         -- Move tab left/right
         { key = '<', mods = 'CTRL|SHIFT', action = act.MoveTabRelative(-1) },
         { key = '>', mods = 'CTRL|SHIFT', action = act.MoveTabRelative(1) },
-        -- Rename current tab; empty input clears the manual name back to auto
+        -- Rename current tab; the prompt starts from the current manual name so
+        -- it can be edited, and is empty when the tab still uses the auto name.
+        -- Empty input clears the manual name back to auto.
         {
             key = 'r',
             mods = 'CTRL|SHIFT',
-            action = act.PromptInputLine {
-                description = wezterm.format {
-                    { Attribute = { Intensity = 'Bold' } },
-                    { Foreground = { Color = '#cba6f7' } },
-                    { Text = '  Enter tab name: ' },
-                },
-                action = wezterm.action_callback(function(window, _pane, line)
-                    if line ~= nil then
-                        window:active_tab():set_title(line)
-                    end
-                end),
-            },
+            action = wezterm.action_callback(function(window, pane)
+                window:perform_action(
+                    act.PromptInputLine {
+                        description = wezterm.format {
+                            { Attribute = { Intensity = 'Bold' } },
+                            { Foreground = { Color = '#cba6f7' } },
+                            { Text = '  Enter tab name: ' },
+                        },
+                        initial_value = window:active_tab():get_title(),
+                        action = wezterm.action_callback(function(win, _pane, line)
+                            if line ~= nil then
+                                win:active_tab():set_title(line)
+                            end
+                        end),
+                    },
+                    pane
+                )
+            end),
         },
         -- Open the 2D color-grid picker in a new tab; writes choice to marker
         -- file /tmp/wezterm-tab-color-<tab_id>, consumed by format-tab-title.
